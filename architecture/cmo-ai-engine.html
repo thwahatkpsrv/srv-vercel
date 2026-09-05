@@ -1,0 +1,560 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CMO AI Engine Middleware — Technical Presentation</title>
+<style>
+:root{
+  --bg:#07111f; --panel:#0d1b2e; --panel2:#11243b; --text:#eaf2ff; --muted:#9fb2c9;
+  --blue:#2f8cff; --cyan:#25d9ff; --green:#42d392; --amber:#ffbf5b; --red:#ff6b7a;
+  --line:rgba(255,255,255,.10); --shadow:0 24px 70px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#030912;color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+body{overflow:hidden}
+.deck{height:100vh;position:relative}
+.slide{
+  display:none; height:100vh; padding:54px 6.5vw 46px; position:relative; overflow:hidden;
+  background:
+    radial-gradient(circle at 82% 18%,rgba(47,140,255,.16),transparent 30%),
+    radial-gradient(circle at 8% 85%,rgba(37,217,255,.08),transparent 26%),
+    linear-gradient(135deg,#06101d,#08182a 55%,#06111e);
+}
+.slide.active{display:block}
+.slide:after{content:"";position:absolute;inset:auto -10% -35% 35%;height:60%;background:radial-gradient(ellipse,rgba(47,140,255,.08),transparent 65%);pointer-events:none}
+.kicker{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--cyan);font-weight:800}
+h1{font-size:clamp(40px,5.1vw,78px);line-height:1.02;margin:12px 0 18px;max-width:1050px}
+h2{font-size:clamp(30px,3.2vw,50px);line-height:1.05;margin:8px 0 26px}
+h3{margin:0 0 8px;font-size:18px}
+p{color:var(--muted);line-height:1.55}
+.subtitle{font-size:20px;color:#c7d7ea;max-width:850px}
+.small{font-size:13px;color:var(--muted)}
+.badge{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);background:rgba(255,255,255,.04);padding:7px 11px;border-radius:999px;font-size:12px;color:#cfe0f4}
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.card{
+  background:linear-gradient(180deg,rgba(17,36,59,.88),rgba(9,25,43,.88)); border:1px solid var(--line);
+  border-radius:18px;padding:20px;box-shadow:var(--shadow)
+}
+.card p{margin:5px 0 0;font-size:14px}
+.card .num{font-size:32px;font-weight:800;color:#fff}
+.flow{display:flex;align-items:stretch;gap:10px;margin:18px 0}
+.node{flex:1;min-width:0;background:rgba(17,36,59,.9);border:1px solid var(--line);border-radius:16px;padding:16px}
+.node strong{display:block;margin-bottom:7px}
+.node span{font-size:12px;color:var(--muted);line-height:1.45}
+.arrow{align-self:center;color:var(--cyan);font-size:25px}
+.tag{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--cyan);font-weight:800}
+ul{padding-left:20px;color:#c6d6e8;line-height:1.6}
+li{margin:6px 0}
+.two-col{display:grid;grid-template-columns:1.05fr .95fr;gap:24px}
+.code{
+  background:#020811;border:1px solid rgba(37,217,255,.18);border-radius:15px;padding:17px 18px;
+  font:12px/1.65 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:#cfe7ff;white-space:pre-wrap
+}
+.hl{color:var(--cyan)} .ok{color:var(--green)} .warn{color:var(--amber)} .danger{color:var(--red)}
+.table{width:100%;border-collapse:collapse;font-size:13px}
+.table th,.table td{border-bottom:1px solid var(--line);padding:10px;text-align:left;vertical-align:top}
+.table th{color:#8fa8c3;font-size:11px;text-transform:uppercase;letter-spacing:.1em}
+.pill{display:inline-block;padding:4px 8px;border-radius:7px;font-size:11px;font-weight:700;background:rgba(66,211,146,.12);color:var(--green)}
+.pill.w{background:rgba(255,191,91,.12);color:var(--amber)}
+.pill.r{background:rgba(255,107,122,.12);color:var(--red)}
+.arch{display:grid;grid-template-columns:1fr 1.5fr 1fr;gap:14px;align-items:center}
+.archbox{padding:18px;border:1px solid var(--line);border-radius:16px;background:rgba(12,30,50,.9)}
+.archbox.primary{border-color:rgba(37,217,255,.35);box-shadow:0 0 45px rgba(37,217,255,.07)}
+.archbox h3{color:#fff}
+.archbox ul{font-size:13px;margin:8px 0 0}
+.callout{border-left:3px solid var(--cyan);padding:12px 16px;background:rgba(37,217,255,.06);border-radius:0 12px 12px 0}
+.footer{position:absolute;bottom:18px;left:6.5vw;right:6.5vw;display:flex;justify-content:space-between;color:#647b95;font-size:11px;z-index:5}
+.topline{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.logo{font-weight:900;letter-spacing:.05em;color:#fff;font-size:21px}.logo i{color:var(--cyan);font-style:normal}
+.controls{position:fixed;right:22px;bottom:20px;display:flex;gap:7px;z-index:20}
+.controls button,.toc button{
+  border:1px solid var(--line);background:rgba(8,22,38,.9);color:#dcecff;border-radius:10px;padding:9px 12px;cursor:pointer
+}
+.controls button:hover,.toc button:hover{border-color:rgba(37,217,255,.5)}
+.progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--blue),var(--cyan));z-index:30;transition:.25s}
+.toc{position:fixed;left:20px;top:20px;z-index:20}.toc button{font-size:12px}
+.menu{
+  display:none;position:fixed;left:20px;top:58px;width:310px;max-height:70vh;overflow:auto;
+  background:#071523;border:1px solid var(--line);border-radius:14px;padding:10px;z-index:25;box-shadow:var(--shadow)
+}
+.menu.open{display:block}.menu button{display:block;width:100%;text-align:left;margin:3px 0}
+.kpi{display:flex;gap:12px;align-items:center}.kpi b{font-size:28px}
+.guard{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.guard .card{padding:14px}.guard .icon{font-size:23px;margin-bottom:8px}
+.timeline{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.phase{position:relative;padding:17px;border:1px solid var(--line);border-radius:14px;background:rgba(15,33,54,.88)}
+.phase b{color:var(--cyan);font-size:13px}.phase p{font-size:12px}
+.note{font-size:11px;color:#7890aa;margin-top:10px}
+@media(max-width:900px){
+  .slide{padding:34px 5vw 44px}.g3,.g4,.g2,.two-col,.arch,.guard,.timeline{grid-template-columns:1fr}
+  .flow{flex-direction:column}.arrow{transform:rotate(90deg);align-self:center}
+  h1{font-size:42px} h2{font-size:32px}.slide{overflow:auto}
+}
+
+/* Middleware flowchart: responsive, self-contained, no external rendering library. */
+.flowchart-slide{padding-top:48px;overflow-y:auto}
+.flowchart-slide h2{margin-bottom:12px}
+.middleware-chart{margin:0 auto;max-width:1450px}
+.middleware-chart svg{display:block;width:100%;max-height:calc(100vh - 210px);min-height:350px}
+.chart-note{font-size:12px;margin:8px 0 45px;color:var(--muted)}
+@media(max-width:900px){.middleware-chart{overflow:auto}.middleware-chart svg{width:1100px;max-width:none;max-height:none;height:auto}.flowchart-slide{padding-top:65px}.chart-note{margin-bottom:65px}}
+@media print{body{overflow:visible}.controls,.toc,.progress{display:none!important}.slide{display:block!important;height:auto;min-height:100vh;break-after:page;overflow:visible}.flowchart-slide svg{max-height:none}body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+
+.flowchart-slide .footer{right:190px}
+@media(max-width:900px){.flowchart-slide .footer{position:static;display:block;margin:20px 0 65px}.flowchart-slide .footer span{display:block;margin-top:8px}.flowchart-slide .chart-note{margin-bottom:16px}}
+</style>
+</head>
+<body>
+<div class="deck" id="deck">
+<div class="progress" id="progress"></div>
+
+<section class="slide active">
+  <div class="topline"><div class="logo">SRV <i>AI ENGINE</i></div><span class="badge">CMO Public Grievance Redressal Portal</span></div>
+  <div style="margin-top:12vh">
+    <div class="kicker">Technical Solution Presentation</div>
+    <h1>AI Engine Middleware</h1>
+    <div class="subtitle">A governed, API-first assistive intelligence layer for grievance intake, understanding, duplicate detection, monitoring, closure quality and management analytics.</div>
+    <div style="margin-top:30px" class="grid g3">
+      <div class="card"><div class="tag">Principle</div><div class="num">AI ≠ Decision</div><p>Every AI result remains reviewable, editable or rejectable by an authorised official.</p></div>
+      <div class="card"><div class="tag">Boundary</div><div class="num">Middleware</div><p>No ownership of the official grievance database or core workflow.</p></div>
+      <div class="card"><div class="tag">Integration</div><div class="num">API First</div><p>Consumes approved C-DIT interfaces and exposes secure AI capabilities as versioned services.</p></div>
+    </div>
+  </div>
+  <div class="footer"><span>Source basis: CMO Portal Technical Documentation</span><span>01 / 15</span></div>
+</section>
+
+<section class="slide">
+  <div class="kicker">01 — Why the middleware</div><h2>What the AI Engine is responsible for</h2>
+  <div class="two-col">
+    <div>
+      <div class="card">
+        <h3>Core responsibility</h3>
+        <p>The middleware is the orchestration/service layer between authorised CMO/front-end modules and approved AI processing services. It normalises requests, applies policy controls, invokes the appropriate AI capability, validates results and returns auditable outputs.</p>
+      </div>
+      <div class="callout" style="margin-top:15px"><b>Source boundary:</b> the document defines the AI Engine as middleware + Conversation Streaming API + AI-Analyzed Detailed Report API. It explicitly says the exact internal API grouping is to be finalised during detailed design.</div>
+    </div>
+    <div class="grid g2">
+      <div class="card"><div class="tag">In</div><h3>AI orchestration</h3><p>OCR, STT, summarisation, semantic similarity, analytics, sentiment and reply checks.</p></div>
+      <div class="card"><div class="tag">In</div><h3>Conversation streaming</h3><p>Real-time token-streamed responses for plain-language query and helpline assistance.</p></div>
+      <div class="card"><div class="tag">In</div><h3>Detailed analytics</h3><p>Structured trends, sentiment, systemic clusters and forecasts for dashboards.</p></div>
+      <div class="card"><div class="tag">Out</div><h3>Core portal authority</h3><p>Official DB, authentication/RBAC, workflow and administrative decisions remain with C-DIT/CMO.</p></div>
+    </div>
+  </div>
+  <div class="footer"><span>Scope extracted from pages 5 & 9</span><span>02 / 15</span></div>
+</section>
+
+<section class="slide">
+  <div class="kicker">02 — Reference architecture</div><h2>Where the middleware sits</h2>
+  <div class="arch">
+    <div class="archbox">
+      <div class="tag">Experience layer</div><h3>CMO / Officer / Helpline</h3>
+      <ul><li>Officer screens & dashboards</li><li>Helpline / enquiry desk</li><li>Approved citizen-channel integrations</li><li>Read-only management query UI</li></ul>
+    </div>
+    <div class="archbox primary">
+      <div class="tag">AI Engine Middleware</div><h3>Policy + Orchestration + AI Services</h3>
+      <div class="grid g2">
+        <div class="card"><h3>Gateway</h3><p>Auth context, request IDs, rate limits</p></div>
+        <div class="card"><h3>Guardrails</h3><p>PII masking, validation, scope & safety</p></div>
+        <div class="card"><h3>Orchestrator</h3><p>Route request to capability/model</p></div>
+        <div class="card"><h3>Evidence</h3><p>Confidence, citations/context, trace</p></div>
+      </div>
+    </div>
+    <div class="archbox">
+      <div class="tag">System of record</div><h3>C-DIT controlled services</h3>
+      <ul><li>Existing portal</li><li>Official grievance database</li><li>Workflow engine</li><li>Master data & hierarchy</li><li>Authorised APIs</li></ul>
+    </div>
+  </div>
+  <div class="flow">
+    <div class="node"><strong>1. Request</strong><span>Authorised module sends structured AI request.</span></div><div class="arrow">→</div>
+    <div class="node"><strong>2. Govern</strong><span>Validate identity/context, minimise/mask data, enforce policy.</span></div><div class="arrow">→</div>
+    <div class="node"><strong>3. Orchestrate</strong><span>Select capability, prompt/template and approved model/service.</span></div><div class="arrow">→</div>
+    <div class="node"><strong>4. Verify</strong><span>Validate schema, confidence and safety; attach trace.</span></div><div class="arrow">→</div>
+    <div class="node"><strong>5. Return</strong><span>AI suggestion goes to human review before official action.</span></div>
+  </div>
+  <div class="footer"><span>Proposed middleware decomposition; source does not mandate internal component names</span><span>03 / 15</span></div>
+</section>
+
+<section class="slide">
+  <div class="kicker">03 — End-to-end grievance flow</div><h2>One engine, multiple intake paths</h2>
+  <div class="flow">
+    <div class="node"><strong>Citizen / Source</strong><span>Scanned petition • Phone • Voice • WhatsApp • Portal • Official social mentions</span></div><div class="arrow">→</div>
+    <div class="node"><strong>AI-assisted intake</strong><span>OCR • STT • image/text processing • profile matching • validation</span></div><div class="arrow">→</div>
+    <div class="node"><strong>Understanding</strong><span>Summary • suggested department/category/priority • related cases</span></div><div class="arrow">→</div>
+    <div class="node"><strong>Official action</strong><span>Officer reviews, edits/overrides, assigns and resolves</span></div><div class="arrow">→</div>
+    <div class="node"><strong>Monitoring</strong><span>Pendency • escalation • feedback • analytics • closure quality</span></div>
+  </div>
+  <div class="grid g4" style="margin-top:20px">
+    <div class="card"><div class="tag">Input</div><h3>Document</h3><p>Printed/typed and handwritten petitions; field-level confidence.</p></div>
+    <div class="card"><div class="tag">Input</div><h3>Voice</h3><p>Malayalam, English and code-mixed STT under realistic helpline conditions.</p></div>
+    <div class="card"><div class="tag">Assist</div><h3>Related cases</h3><p>Semantic duplicate/common-issue detection; never auto-merge.</p></div>
+    <div class="card"><div class="tag">Assist</div><h3>Closure</h3><p>Compare reply with complaint/action notes and flag gaps.</p></div>
+  </div>
+  <div class="footer"><span>Lifecycle flow aligned to the source document's five AI intervention points</span><span>04 / 15</span></div>
+</section>
+
+<section class="slide">
+  <div class="kicker">04 — User request flow</div><h2>How a front-end request travels through the engine</h2>
+  <div class="two-col">
+    <div class="code">POST /api/v1/ai/complaint/analyze
+
+{
+  "request_id": "CMO-2026-000981",
+  "operation": "complaint_analysis",
+  "language": "ml",
+  "source": "whatsapp",
+  "complaint": {
+    "text": "...",
+    "location": "...",
+    "citizen_ref": "masked"
+  },
+  "requested_outputs": [
+    "summary",
+    "category_suggestion",
+    "priority_suggestion",
+    "related_cases"
+  ],
+  "context": {
+    "master_data_version": "2026.08",
+    "user_role": "authorized_officer"
+  }
+}</div>
+    <div>
+      <div class="card"><div class="tag">Gateway</div><h3>1. Authenticate & authorise</h3><p>Use C-DIT supplied identity/RBAC context. Reject unauthorised or malformed requests.</p></div>
+      <div class="card" style="margin-top:10px"><div class="tag">Privacy</div><h3>2. Minimise & mask</h3><p>Mask sensitive/PII fields by default before AI processing where feasible.</p></div>
+      <div class="card" style="margin-top:10px"><div class="tag">Policy</div><h3>3. Check allowed operation</h3><p>Ensure requested capability is within approved AI scope and uses approved master data/context.</p></div>
+      <div class="card" style="margin-top:10px"><div class="tag">Route</div><h3>4. Execute</h3><p>Call OCR/STT/LLM/embedding/analytics service according to operation and policy.</p></div>
+    </div>
+  </div>
+  <div class="flow">
+    <div class="node"><strong>Validate</strong><span>Schema + role + payload + limits</span></div><div class="arrow">→</div>
+    <div class="node"><strong>Pre-process</strong><span>Mask + normalise + context</span></div><div class="arrow">→</div>
+    <div class="node"><strong>AI call</strong><span>Approved model/service</span></div><div class="arrow">→</div>
+    <div class="node"><strong>Post-process</strong><span>Schema + confidence + policy</span></div><div class="arrow">→</div>
+    <div class="node"><strong>Audit</strong><span>Trace + model/version + outcome</span></div>
+  </div>
+  <div class="footer"><span>Example request is a proposed technical contract, not a mandated source endpoint</span><span>05 / 15</span></div>
+</section>
+
+<section class="slide">
+  <div class="kicker">05 — Output contract</div><h2>AI output is evidence for a human decision</h2>
+  <div class="two-col">
+    <div class="code">{
+  "request_id": "CMO-2026-000981",
+  "status": "REVIEW_REQUIRED",
+  "result": {
+    "summary": {
+      "text": "...",
+      "confidence": 0.94
+    },
+    "suggestions": {
+      "category": {"value":"...", "confidence":0.88},
+      "priority": {"value":"high", "confidence":0.82}
+    },
+    "related_cases": [
+      {"case_ref":"masked-001","similarity":0.91}
+    ]
+  },
+  "guardrails": {
+    "pii_masked": true,
+    "human_review": true,
+    "decision_authority": "officer"
+  },
+  "trace": {
+    "model": "approved-model-id",
+    "model_version": "x.y",
+    "policy_version": "p.z"
+  }
+}</div>
+    <div class="grid g2">
+      <div class="card"><h3>Confidence</h3><p>Expose field/result confidence where applicable. Low-confidence or high-impact outputs route to review.</p></div>
+      <div class="card"><h3>Editable</h3><p>Officer can accept, edit, reject or override AI suggestions before final use.</p></div>
+      <div class="card"><h3>Traceable</h3><p>Log AI suggestion and officer outcome through approved system integration.</p></div>
+      <div class="card"><h3>Non-authoritative</h3><p>The engine returns assistance, not a final administrative action.</p></div>
+    </div>
+  </div>
+  <div class="callout" style="margin-top:18px"><b>Important:</b> citizen notifications may be generated by the engine, but dispatch remains a portal/gateway function. The engine should not silently send notifications.</div>
+  <div class="footer"><span>Proposed response envelope derived from documented auditability and human-review requirements</span><span>06 / 15</span></div>
+</section>
+
+<section class="slide">
+  <div class="kicker">06 — Guardrails</div><h2>Guardrails are part of the architecture, not an add-on</h2>
+  <div class="guard">
+    <div class="card"><div class="icon">🔐</div><h3>Access</h3><p>Role-aware context; approved interfaces; no direct production DB access.</p></div>
+    <div class="card"><div class="icon">🛡</div><h3>Privacy</h3><p>Minimise, mask/redact PII, encrypt, retain only for approved periods.</p></div>
+    <div class="card"><div class="icon">🎯</div><h3>Scope</h3><p>Block unsupported actions and prevent AI from becoming the workflow authority.</p></div>
+    <div class="card"><div class="icon">🧑‍⚖️</div><h3>Human-in-loop</h3><p>Low-confidence/high-impact outputs require review; decisions remain with officials.</p></div>
+    <div class="card"><div class="icon">📋</div><h3>Audit</h3><p>Prompt/response, confidence, model/version, edits and final actions are traceable.</p></div>
+  </div>
+  <div class="grid g3" style="margin-top:18px">
+    <div class="card"><span class="pill">ALLOW</span><h3 style="margin-top:10px">Assist</h3><p>Summarise, transcribe, detect related cases, flag risk, analyse trends, suggest classifications.</p></div>
+    <div class="card"><span class="pill w">REVIEW</span><h3 style="margin-top:10px">Human gate</h3><p>Identity matches, fuzzy profile matches, duplicate/common-issue tags, routing/priority suggestions and closure-quality flags.</p></div>
+    <div class="card"><span class="pill r">BLOCK</span><h3 style="margin-top:10px">No autonomous authority</h3><p>No auto-merge, auto-tag, auto-close, final administrative decision or direct production DB write.</p></div>
+  </div>
+  <div class="footer"><span>Guardrails explicitly grounded in pages 5, 9–12 and 19</span><span>07 / 15</span></div>
+</section>
+
+<section class="slide">
+  <div class="kicker">07 — Capability services</div><h2>Reusable AI capabilities behind one governed middleware</h2>
+  <table class="table">
+    <thead><tr><th>Capability</th><th>Input</th><th>Output</th><th>Control / gate</th></tr></thead>
+    <tbody>
+      <tr><td><b>OCR</b></td><td>Scanned / handwritten petition</td><td>Citizen fields + complaint text + field confidence</td><td>≥95% printed/typed; ≥80% handwritten at go-live; manual sign-off</td></tr>
+      <tr><td><b>STT</b></td><td>Phone / WhatsApp voice</td><td>Transcript + low-confidence spans</td><td>≥80% word accuracy realistic helpline conditions; agent verification</td></tr>
+      <tr><td><b>Complaint understanding</b></td><td>Structured complaint</td><td>Summary + suggested category/priority/routing</td><td>Confidence + officer review; no autonomous assignment</td></tr>
+      <tr><td><b>Duplicate / common issue</b></td><td>Complaint + approved corpus</td><td>Similarity + linked cases / cluster</td><td>Configurable thresholds; never auto-merge/tag</td></tr>
+      <tr><td><b>Pendency intelligence</b></td><td>Status + SLA + history</td><td>At-risk flags, reminders/escalation signals</td><td>Approved hierarchy; every event logged</td></tr>
+      <tr><td><b>Reply quality</b></td><td>Complaint + action notes + draft reply</td><td>Missing/unclear items + redressal/clarity flags</td><td>Prompt, never a block</td></tr>
+      <tr><td><b>Analytics</b></td><td>Approved read-only reporting data</td><td>Trends, clusters, forecasts, natural-language answers</td><td>RBAC; must never modify grievance records</td></tr>
+    </tbody>
+  </table>
+  <div class="footer"><span>Capability set follows the functional modules in section 7</span><span>08 / 15</span></div>
+</section>
+
+<section class="slide">
+  <div class="kicker">08 — Conversation Streaming API</div><h2>Safe natural-language interaction</h2>
+  <div class="two-col">
+    <div>
+      <div class="card"><div class="tag">Request</div><h3>Officer asks a question</h3><p>“Show overdue grievances in district X and explain the main recurring issue this month.”</p></div>
+      <div class="flow" style="margin:12px 0">
+        <div class="node"><strong>Read-only context</strong><span>Approved reporting data only</span></div><div class="arrow">→</div>
+        <div class="node"><strong>Query planner</strong><span>Map intent to allowed analytics operations</span></div><div class="arrow">→</div>
+        <div class="node"><strong>Stream answer</strong><span>Tokens/events as available</span></div>
+      </div>
+      <div class="callout"><b>Critical guardrail:</b> natural-language query is read-only. It must never become an interface for modifying grievance records or workflow.</div>
+    </div>
+    <div class="code">POST /api/v1/ai/conversation/stream
+
+event: meta
+data: {"request_id":"...","policy":"read_only"}
+
+event: token
+data: {"text":"There are "}
+
+event: token
+data: {"text":"42 overdue..."}
+
+event: evidence
+data: {"source":"approved-reporting-data"}
+
+event: final
+data: {
+  "status":"COMPLETE",
+  "trace_id":"..."
+}</div>
+  </div>
+  <div class="footer"><span>Streaming API is in the stated AI Engine scope; endpoint/event format shown is proposed</span><span>09 / 15</span></div>
+</section>
+
+<section class="slide">
+  <div class="kicker">09 — Detailed report API</div><h2>Structured intelligence for dashboards</h2>
+  <div class="two-col">
+    <div class="code">POST /api/v1/ai/reports/analyze
+
+{
+  "period": {"from":"2026-08-01","to":"2026-08-31"},
+  "dimensions": ["district","category"],
+  "metrics": ["volume","pendency","resolution_time"],
+  "features": [
+    "sentiment",
+    "common_issue_clusters",
+    "surge_forecast"
+  ],
+  "filters": {"district_id":"approved-ref"}
+}</div>
+    <div>
+      <div class="grid g2">
+        <div class="card"><h3>Operational KPIs</h3><p>Received, resolved, pending, average resolution time.</p></div>
+        <div class="card"><h3>SLA & delay</h3><p>Near-due, overdue and compliance indicators.</p></div>
+        <div class="card"><h3>Quality</h3><p>Closure effectiveness, repeat grievances, ratings and dissatisfaction themes.</p></div>
+        <div class="card"><h3>Trends</h3><p>Category/location trends, systemic issues and surge forecasts.</p></div>
+      </div>
+      <div class="card" style="margin-top:12px"><h3>Management narrative</h3><p>Generate a concise written summary of key findings for review meetings. Forecasting remains confined to grievance-related data and approved datasets.</p></div>
+    </div>
+  </div>
+  <div class="footer"><span>Source: management analytics requirements, page 13</span><span>10 / 15</span></div>
+</section>
+
+<section class="slide">
+  <div class="kicker">10 — Failure & fallback</div><h2>AI failure must never stop grievance processing</h2>
+  <div class="flow" style="margin-top:35px">
+    <div class="node"><strong>AI request</strong><span>Normal path begins.</span></div><div class="arrow">→</div>
+    <div class="node"><strong>AI unavailable?</strong><span>Timeout • provider error • capacity issue</span></div><div class="arrow">→</div>
+    <div class="node"><strong>Confidence inadequate?</strong><span>Policy threshold not met.</span></div><div class="arrow">→</div>
+    <div class="node" style="border-color:rgba(255,191,91,.35)"><strong>Human/manual path</strong><span>Existing portal workflow continues.</span></div>
+  </div>
+  <div class="grid g3" style="margin-top:28px">
+    <div class="card"><div class="tag">Timeout</div><h3>Fail fast</h3><p>Return a controlled status rather than blocking the user or workflow.</p></div>
+    <div class="card"><div class="tag">Provider</div><h3>Safe degradation</h3><p>Do not silently switch to an unapproved provider or model.</p></div>
+    <div class="card"><div class="tag">Audit</div><h3>Record the failure</h3><p>Trace the request, failure reason, model/provider version and fallback state.</p></div>
+  </div>
+  <div class="callout" style="margin-top:20px"><b>Source requirement:</b> if an AI service is unavailable or cannot return a reliable result, existing manual workflow continues without interruption; no process stage may block on AI availability.</div>
+  <div class="footer"><span>Fallback principle explicitly stated in system architecture and NFRs</span><span>11 / 15</span></div>
+</section>
+
+<section class="slide">
+  <div class="kicker">11 — Security, privacy & observability</div><h2>Production controls</h2>
+  <div class="grid g3">
+    <div class="card"><h3>Data protection</h3><ul><li>Encryption in transit and at rest</li><li>Secure secrets</li><li>OWASP controls</li><li>Malware scanning</li><li>Minimum necessary access</li></ul></div>
+    <div class="card"><h3>Governance</h3><ul><li>India data residency unless approved otherwise</li><li>No training of public/general-purpose models using Government data</li><li>External AI provider requires prior approval</li><li>Purpose-limited retention</li></ul></div>
+    <div class="card"><h3>Observability</h3><ul><li>Central logs, metrics and alerts</li><li>Trace IDs</li><li>Model/version logging</li><li>Operational dashboards</li><li>AI suggestion + officer outcome history</li></ul></div>
+  </div>
+  <div class="grid g2" style="margin-top:16px">
+    <div class="card"><h3>Performance & availability</h3><p>Interactive screens: target ≤3 seconds excluding external AI/model processing. Startup-developed production services: ≥99.5% availability, excluding approved maintenance/upstream failures.</p></div>
+    <div class="card"><h3>Scalability & interoperability</h3><p>Modular, API-first, container-ready; horizontal scaling based on historical/peak volume analysis; open standards and documented REST/JSON APIs or approved equivalent.</p></div>
+  </div>
+  <div class="footer"><span>Non-functional requirements from page 15 and responsible-AI controls from page 19</span><span>12 / 15</span></div>
+</section>
+
+<section class="slide">
+  <div class="kicker">12 — Delivery roadmap</div><h2>Build → pilot → govern → scale</h2>
+  <div class="timeline">
+    <div class="phase"><b>W0–7</b><h3>Foundation</h3><p>Study, stakeholder plan, detailed SRS, architecture, API/security/data plan.</p></div>
+    <div class="phase"><b>W7–16</b><h3>Pilot</h3><p>OCR, STT, summary/routing pilot; evaluate accuracy and tune models.</p></div>
+    <div class="phase"><b>W16–24</b><h3>Core</h3><p>Duplicate detection, pendency, helpline assistance and reply checks.</p></div>
+    <div class="phase"><b>W24–34</b><h3>Advanced</h3><p>Analytics, feedback, social-media modules; UAT and security remediation.</p></div>
+    <div class="phase"><b>W34–36+</b><h3>Go-live</h3><p>Production readiness, handover, documentation, training, then 12-month support/tuning.</p></div>
+  </div>
+  <div class="grid g3" style="margin-top:24px">
+    <div class="card"><h3>Pilot gates</h3><p>Printed OCR ≥95%; handwritten OCR ≥80% at go-live; STT ≥80% word accuracy under realistic conditions.</p></div>
+    <div class="card"><h3>Model evaluation</h3><p>Documented and reproducible metrics; routing precision/recall/confusion matrix; duplicate false-positive/false-negative reporting.</p></div>
+    <div class="card"><h3>Human review</h3><p>100% of low-confidence/high-impact outputs routed for review; sampled AI suggestions and officer outcomes audited.</p></div>
+  </div>
+  <div class="footer"><span>Timeline and acceptance gates from sections 9–10</span><span>13 / 15</span></div>
+</section>
+
+<section class="slide">
+  <div class="kicker">13 — Decisions before detailed design</div><h2>What should be frozen before implementation</h2>
+  <div class="grid g2">
+    <div class="card"><span class="pill w">SCOPE DECISION</span><h3 style="margin-top:10px">Routing suggestion boundary</h3><p>The document contains a scope inconsistency: one scope table says department/category routing suggestion is not part of the AI Engine, while later functional sections explicitly include department/category/priority suggestions. Resolve this before API/SRS freeze.</p></div>
+    <div class="card"><span class="pill w">API DECISION</span><h3 style="margin-top:10px">Logical API grouping</h3><p>The document names middleware, Conversation Streaming API and AI-Analyzed Detailed Report API, but explicitly says the exact internal API grouping/endpoints are not mandated. Freeze the final contract during detailed design.</p></div>
+    <div class="card"><span class="pill">DATA DECISION</span><h3 style="margin-top:10px">Approved data/context</h3><p>Define the exact C-DIT APIs, master-data versions, historical-data access mechanism, masking rules and allowed fields for each AI operation.</p></div>
+    <div class="card"><span class="pill">MODEL DECISION</span><h3 style="margin-top:10px">Model/provider policy</h3><p>Source does not mandate a specific AI/LLM/OCR/STT/embedding model. Final technology must satisfy accuracy, performance, security, scalability, cost and Government approval requirements.</p></div>
+  </div>
+  <div class="callout" style="margin-top:20px"><b>Recommended design rule:</b> freeze policy contracts first — scope, identity, data access, confidence thresholds, human-review states, audit events and fallback — then optimise model/provider selection behind those contracts.</div>
+  <div class="footer"><span>Open decisions are explicitly distinguished from source-mandated requirements</span><span>14 / 15</span></div>
+</section>
+
+
+<section class="slide flowchart-slide" id="middleware-flowchart">
+  <div class="kicker">14 — Middleware flowchart</div>
+  <h2>Request, AI assistance and officer decision</h2>
+  <figure class="middleware-chart"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="flow-title flow-desc"><title id="flow-title">CMO AI middleware request and review flow</title><desc id="flow-desc">Authorised requests pass access checks and privacy controls before AI processing. Invalid requests are rejected. Failed or unreliable AI processing returns to manual work. Officers review results and control official actions through C-DIT interfaces. All outcomes are audited.</desc><defs><marker id="fc-arrow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9Z" fill="#25d9ff"/></marker><marker id="fc-warn" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9Z" fill="#ffbf5b"/></marker></defs>
+<rect x="30" y="30" width="310" height="150" rx="16" fill="#10243a" stroke="#25d9ff" stroke-opacity=".65" stroke-width="2"/>
+<text x="185.0" y="66" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="24" fill="#25d9ff" font-weight="700">1. Authorised request</text>
+<text x="185.0" y="100" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="18.5" fill="#b9cce1" font-weight="400">Officer / helpline / reporting UI</text>
+<text x="185.0" y="128" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="18.5" fill="#b9cce1" font-weight="400">Structured payload + request ID</text>
+<text x="185.0" y="156" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="18.5" fill="#b9cce1" font-weight="400">C-DIT supplied identity context</text>
+<rect x="440" y="30" width="310" height="150" rx="16" fill="#10243a" stroke="#25d9ff" stroke-opacity=".65" stroke-width="2"/>
+<text x="595.0" y="66" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="24" fill="#25d9ff" font-weight="700">2. Validate access</text>
+<text x="595.0" y="100" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="18.5" fill="#b9cce1" font-weight="400">Verify identity and permissions</text>
+<text x="595.0" y="128" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="18.5" fill="#b9cce1" font-weight="400">Check schema, limits and scope</text>
+<text x="595.0" y="156" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="18.5" fill="#b9cce1" font-weight="400">Reject invalid requests</text>
+<rect x="850" y="30" width="310" height="150" rx="16" fill="#10243a" stroke="#25d9ff" stroke-opacity=".65" stroke-width="2"/>
+<text x="1005.0" y="66" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="24" fill="#25d9ff" font-weight="700">3. Protect and prepare</text>
+<text x="1005.0" y="100" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="18.5" fill="#b9cce1" font-weight="400">Minimise / mask personal data</text>
+<text x="1005.0" y="128" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="18.5" fill="#b9cce1" font-weight="400">Use approved context and lists</text>
+<text x="1005.0" y="156" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="18.5" fill="#b9cce1" font-weight="400">Choose permitted capability</text>
+<path d="M340 105 H440" stroke="#25d9ff" stroke-width="2.5" fill="none" marker-end="url(#fc-arrow)"/>
+<path d="M750 105 H850" stroke="#25d9ff" stroke-width="2.5" fill="none" marker-end="url(#fc-arrow)"/>
+<rect x="1230" y="30" width="335" height="150" rx="16" fill="#10243a" stroke="#25d9ff" stroke-opacity=".65" stroke-width="2"/>
+<text x="1397.5" y="66" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="24" fill="#25d9ff" font-weight="700">4. Invoke AI service</text>
+<text x="1397.5" y="100" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="18.5" fill="#b9cce1" font-weight="400">OCR / STT / summary / matches</text>
+<text x="1397.5" y="128" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="18.5" fill="#b9cce1" font-weight="400">Streaming / reports / reply checks</text>
+<text x="1397.5" y="156" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="18.5" fill="#b9cce1" font-weight="400">Approved model and policy</text>
+<path d="M1160 105 H1230" stroke="#25d9ff" stroke-width="2.5" fill="none" marker-end="url(#fc-arrow)"/>
+<rect x="440" y="245" width="310" height="115" rx="16" fill="#10243a" stroke="#ffbf5b" stroke-opacity=".65" stroke-width="2"/>
+<text x="595.0" y="281" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="24" fill="#ffbf5b" font-weight="700">Controlled rejection</text>
+<text x="595.0" y="315" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="18.5" fill="#b9cce1" font-weight="400">Return reason and audit event</text>
+<text x="595.0" y="343" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="18.5" fill="#b9cce1" font-weight="400">No AI execution</text>
+<path d="M595 180 V245" stroke="#ffbf5b" stroke-width="2.5" fill="none" marker-end="url(#fc-warn)" stroke-dasharray="7 6"/>
+<text x="660" y="218" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="19" fill="#ffbf5b" font-weight="400">Invalid</text>
+<path d="M1397 240 L1560 340 L1397 440 L1234 340 Z" fill="#10243a" stroke="#25d9ff" stroke-width="2"/>
+<text x="1397" y="327" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="24" fill="#25d9ff" font-weight="700">Usable AI result?</text>
+<text x="1397" y="360" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="18" fill="#b9cce1" font-weight="400">Schema + confidence + policy</text>
+<path d="M1397 180 V240" stroke="#25d9ff" stroke-width="2.5" fill="none" marker-end="url(#fc-arrow)"/>
+<rect x="850" y="265" width="310" height="150" rx="16" fill="#10243a" stroke="#25d9ff" stroke-opacity=".65" stroke-width="2"/>
+<text x="1005.0" y="301" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="24" fill="#25d9ff" font-weight="700">5. Return for review</text>
+<text x="1005.0" y="335" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="18.5" fill="#b9cce1" font-weight="400">Structured or streamed output</text>
+<text x="1005.0" y="363" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="18.5" fill="#b9cce1" font-weight="400">Confidence + evidence/context</text>
+<text x="1005.0" y="391" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="18.5" fill="#b9cce1" font-weight="400">Request, model and policy trace</text>
+<path d="M1234 340 H1160" stroke="#25d9ff" stroke-width="2.5" fill="none" marker-end="url(#fc-arrow)"/>
+<text x="1195" y="323" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="19" fill="#b9cce1" font-weight="400">Yes</text>
+<rect x="1230" y="550" width="335" height="145" rx="16" fill="#10243a" stroke="#ffbf5b" stroke-opacity=".65" stroke-width="2"/>
+<text x="1397.5" y="586" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="24" fill="#ffbf5b" font-weight="700">Manual fallback</text>
+<text x="1397.5" y="620" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="18.5" fill="#b9cce1" font-weight="400">Timeout, error or unreliable result</text>
+<text x="1397.5" y="648" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="18.5" fill="#b9cce1" font-weight="400">Return controlled fallback status</text>
+<text x="1397.5" y="676" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="18.5" fill="#b9cce1" font-weight="400">Continue existing manual work</text>
+<path d="M1397 440 V550" stroke="#ffbf5b" stroke-width="2.5" fill="none" marker-end="url(#fc-warn)" stroke-dasharray="7 6"/>
+<text x="1460" y="493" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="19" fill="#ffbf5b" font-weight="400">No</text>
+<rect x="850" y="550" width="310" height="145" rx="16" fill="#10243a" stroke="#42d392" stroke-opacity=".65" stroke-width="2"/>
+<text x="1005.0" y="586" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="24" fill="#42d392" font-weight="700">6. Officer review</text>
+<text x="1005.0" y="620" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="18.5" fill="#b9cce1" font-weight="400">Accept, edit, reject or override</text>
+<text x="1005.0" y="648" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="18.5" fill="#b9cce1" font-weight="400">Manually assess when needed</text>
+<text x="1005.0" y="676" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="18.5" fill="#b9cce1" font-weight="400">No autonomous assignment</text>
+<path d="M1005 415 V550" stroke="#25d9ff" stroke-width="2.5" fill="none" marker-end="url(#fc-arrow)"/>
+<path d="M1230 623 H1160" stroke="#ffbf5b" stroke-width="2.5" fill="none" marker-end="url(#fc-warn)" stroke-dasharray="7 6"/>
+<rect x="440" y="550" width="310" height="145" rx="16" fill="#10243a" stroke="#42d392" stroke-opacity=".65" stroke-width="2"/>
+<text x="595.0" y="586" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="24" fill="#42d392" font-weight="700">7. Approved action</text>
+<text x="595.0" y="620" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="18.5" fill="#b9cce1" font-weight="400">Officer makes final decision</text>
+<text x="595.0" y="648" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="18.5" fill="#b9cce1" font-weight="400">Action uses C-DIT interfaces</text>
+<text x="595.0" y="676" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="18.5" fill="#b9cce1" font-weight="400">Reply check never blocks</text>
+<path d="M850 623 H750" stroke="#25d9ff" stroke-width="2.5" fill="none" marker-end="url(#fc-arrow)"/>
+<rect x="30" y="550" width="310" height="145" rx="16" fill="#10243a" stroke="#42d392" stroke-opacity=".65" stroke-width="2"/>
+<text x="185.0" y="586" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="24" fill="#42d392" font-weight="700">Official portal / workflow</text>
+<text x="185.0" y="620" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="18.5" fill="#b9cce1" font-weight="400">Official records stay with C-DIT</text>
+<text x="185.0" y="648" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="18.5" fill="#b9cce1" font-weight="400">Portal/gateway sends notifications</text>
+<text x="185.0" y="676" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="18.5" fill="#b9cce1" font-weight="400">AI cannot auto-close grievances</text>
+<path d="M440 623 H340" stroke="#25d9ff" stroke-width="2.5" fill="none" marker-end="url(#fc-arrow)"/>
+<rect x="30" y="265" width="310" height="150" rx="16" fill="#10243a" stroke="#25d9ff" stroke-opacity=".65" stroke-width="2"/>
+<text x="185.0" y="301" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="24" fill="#25d9ff" font-weight="700">Read-only interaction</text>
+<text x="185.0" y="335" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="18.5" fill="#b9cce1" font-weight="400">Conversation and report outputs</text>
+<text x="185.0" y="363" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="18.5" fill="#b9cce1" font-weight="400">Respect approved reporting access</text>
+<text x="185.0" y="391" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="18.5" fill="#b9cce1" font-weight="400">Never modify records or workflow</text>
+<text x="595" y="453" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="20" fill="#b9cce1" font-weight="400">Officer action applies only where needed.</text>
+<text x="595" y="483" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="20" fill="#b9cce1" font-weight="400">Reporting and query paths remain read-only.</text>
+<rect x="30" y="755" width="1535" height="100" rx="14" fill="#0a1b2d" stroke="#37506a"/>
+<text x="797" y="791" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="18.5" fill="#25d9ff" font-weight="700">AUDIT ACROSS EVERY PATH</text>
+<text x="797" y="825" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="18.5" fill="#b9cce1" font-weight="400">Request ID • AI output and confidence • Model/policy version • Officer outcome • Rejection or fallback reason</text>
+<text x="797" y="891" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="19" fill="#b9cce1" font-weight="400">Proposed design. Routing scope and exact API contracts require confirmation. No direct AI-vendor production database access.</text>
+</svg></figure>
+  <p class="chart-note">On small screens, scroll the chart horizontally. Solid connectors: normal processing. Amber dashed connectors: rejection or manual fallback. Green steps: authorised human decisions and official workflow.</p>
+  <div class="footer"><span>Flowchart aligned to this final presentation; proposed technical design</span><span>15 / 15</span></div>
+</section>
+
+</div>
+
+<div class="toc"><button onclick="toggleMenu()">☰ Slides</button><div class="menu" id="menu"></div></div>
+<div class="controls"><button onclick="prev()">←</button><button onclick="next()">→</button><button onclick="fullscreen()">⛶</button></div>
+
+<script>
+const slides=[...document.querySelectorAll('.slide')];
+let idx=0;
+const menu=document.getElementById('menu');
+slides.forEach((s,i)=>{
+  const b=document.createElement('button');
+  b.textContent=(String(i+1).padStart(2,'0'))+'  '+(s.querySelector('h1,h2')?.textContent||'Slide');
+  b.onclick=()=>{go(i);menu.classList.remove('open')};
+  menu.appendChild(b);
+});
+function go(i){idx=Math.max(0,Math.min(slides.length-1,i));slides.forEach((s,n)=>s.classList.toggle('active',n===idx));document.getElementById('progress').style.width=((idx+1)/slides.length*100)+'%';window.scrollTo(0,0)}
+function next(){go(idx+1)} function prev(){go(idx-1)}
+function toggleMenu(){menu.classList.toggle('open')}
+function fullscreen(){document.documentElement.requestFullscreen?.()}
+document.addEventListener('keydown',e=>{
+  if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();next()}
+  if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();prev()}
+  if(e.key==='Escape')menu.classList.remove('open')
+});
+let touchX=null;
+document.addEventListener('touchstart',e=>touchX=e.target.closest('.middleware-chart')?null:e.changedTouches[0].screenX,{passive:true});
+document.addEventListener('touchend',e=>{if(touchX===null)return;const dx=e.changedTouches[0].screenX-touchX;if(Math.abs(dx)>50)dx<0?next():prev();touchX=null},{passive:true});
+go(location.hash==='#middleware-flowchart'?slides.findIndex(s=>s.id==='middleware-flowchart'):0);
+</script>
+
+</body>
+</html>
