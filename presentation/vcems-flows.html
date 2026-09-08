@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="color-scheme" content="dark">
     <meta name="description"
-        content="VCEMS enhancement: from the existing FIR platform to a digitized case, document and arrest workflow through to court submission.">
-    <title>VCEMS | Existing System to Digitized Case Workflow</title>
+        content="VCEMS: petition intake, FIR, case management, AI features and Case Diary.">
+    <title>VCEMS | FIR, Case Management, AI and Case Diary</title>
     <style>
         :root {
             --bg: #07111f;
@@ -1183,6 +1183,25 @@
             line-height: 1.45
         }
 
+        .topic-card {
+            padding: 20px 18px
+        }
+
+        .topic-card h3 {
+            font-size: 18px
+        }
+
+        .topic-card ul {
+            margin-top: 10px;
+            padding-left: 18px
+        }
+
+        .topic-card li {
+            margin: 7px 0;
+            font-size: 14px;
+            line-height: 1.4
+        }
+
         .row-title {
             display: flex;
             align-items: center;
@@ -1249,6 +1268,72 @@
             grid-template-columns: 1fr 1fr;
             gap: 16px;
             margin-top: 16px
+        }
+
+        .ai-layout {
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            gap: 18px;
+            align-items: stretch
+        }
+
+        .ai-stack {
+            display: grid;
+            gap: 10px
+        }
+
+        .ai-stack .card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 16px
+        }
+
+        .ai-stack .icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px
+        }
+
+        .ai-stack .icon svg {
+            width: 17px;
+            height: 17px
+        }
+
+        .ai-stack h3 {
+            margin: 0;
+            font-size: 15px
+        }
+
+        .ai-main {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px
+        }
+
+        .ai-main .card {
+            min-height: 240px
+        }
+
+        .ai-main ul {
+            font-size: 15px
+        }
+
+        .line-card {
+            padding: 18px
+        }
+
+        .line-card .card-head {
+            margin-bottom: 8px
+        }
+
+        .line-card h3 {
+            font-size: 17px
+        }
+
+        .line-card p {
+            font-size: 15px;
+            line-height: 1.4
         }
 
         .track-list {
@@ -1380,6 +1465,16 @@
                 gap: 12px
             }
 
+            .ai-layout {
+                grid-template-columns: 200px 1fr;
+                gap: 14px
+            }
+
+            .ai-main .card {
+                min-height: 280px;
+                padding: 16px
+            }
+
             .g4 .card {
                 padding: 17px
             }
@@ -1459,8 +1554,21 @@
 
             .g2,
             .two-col,
-            .architecture {
+            .architecture,
+            .ai-layout {
                 grid-template-columns: 1fr
+            }
+
+            .ai-stack {
+                grid-template-columns: repeat(2, minmax(0, 1fr))
+            }
+
+            .ai-main {
+                grid-template-columns: 1fr
+            }
+
+            .ai-main .card {
+                min-height: 0
             }
 
             .timeline {
@@ -1602,7 +1710,8 @@
             .metrics,
             .timeline,
             .before-after,
-            .field-list {
+            .field-list,
+            .ai-stack {
                 grid-template-columns: 1fr
             }
 
@@ -1817,690 +1926,345 @@
                 <span>Slides</span></button>
             <div class="brand">VCEMS<span>SOLUTION PRESENTATION</span></div>
         </div>
-        <div class="nav-right"><span class="nav-section" id="sectionLabel">Cover</span><button
+        <div class="nav-right"><span class="nav-section" id="sectionLabel">Petition Intake</span><button
                 class="tool" id="sourcesButton" aria-haspopup="dialog" aria-controls="sourcesDialog"
                 title="Reference material">Sources</button></div>
     </header>
     <main id="deck" aria-label="VCEMS presentation">
 
-        <section class="slide cover active" id="cover" data-section="Cover" aria-labelledby="title-1">
+        <section class="slide active" id="petition-intake" data-section="Petition Intake" aria-labelledby="title-intake">
             <div class="inner">
-                <div class="client">Prepared for <b>VCEMS / VACB</b></div>
-                <div class="kicker">Existing platform to enhanced case workflow</div>
-                <h1 id="title-1">VCEMS Enhancement</h1>
-                <p class="subtitle">From the existing FIR platform to a digitized case, document and arrest workflow.
-                    Petition data auto-fills FIR. FIR auto-starts Case Diary. Documents, arrest, search and court
-                    submission stay digital.</p>
-                <div class="grid g2">
-                    <div class="card">
+                <div class="kicker">Slide 01</div>
+                <h2 id="title-intake">Petition intake</h2>
+                <p class="lead">A petition can start from any of these channels. The public uses the portal and QR form
+                    to create a petition and track their case.</p>
+                <div class="grid g4">
+                    <div class="card line-card">
                         <div class="card-head">
-                            <span class="icon amber" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg></span>
-                            <span class="section-chip" style="margin:0">EXISTING SYSTEM TODAY</span>
+                            <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>
+                            <h3>IVR / Helpline</h3>
                         </div>
-                        <h3>FIR-centric, paper after registration</h3>
-                        <p>Master, Activities and Reports already support FIR documentation, users and units. After FIR
-                            registration, investigation work, memos, arrests and court submission remain largely
-                            manual.</p>
+                        <p>Call recordings from the helpline become a petition.</p>
                     </div>
-                    <div class="card primary">
+                    <div class="card line-card">
+                        <div class="card-head">
+                            <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.59 13.51 6.83 3.98M15.41 6.51l-6.82 3.98"/></svg></span>
+                            <h3>Social media listening</h3>
+                        </div>
+                        <p>Complaints from official social accounts are captured.</p>
+                    </div>
+                    <div class="card line-card">
+                        <div class="card-head">
+                            <span class="icon orange" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/><rect x="7" y="7" width="10" height="10" rx="1"/></svg></span>
+                            <h3>OCR reading</h3>
+                        </div>
+                        <p>Handwritten papers, scans and email attachments are read by OCR.</p>
+                    </div>
+                    <div class="card line-card">
+                        <div class="card-head">
+                            <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></span>
+                            <h3>Email</h3>
+                        </div>
+                        <p>The integrated mailbox turns incoming mail into a petition.</p>
+                    </div>
+                    <div class="card line-card">
+                        <div class="card-head">
+                            <span class="icon green" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
+                            <h3>WhatsApp</h3>
+                        </div>
+                        <p>Texts, images and voice notes are accepted as intake.</p>
+                    </div>
+                    <div class="card line-card primary">
+                        <div class="card-head">
+                            <span class="icon amber" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20 14v6M14 20h6"/></svg></span>
+                            <h3>QR petition</h3>
+                        </div>
+                        <p>The public scans a QR code to open the form and create a petition.</p>
+                    </div>
+                    <div class="card line-card primary">
+                        <div class="card-head">
+                            <span class="icon green" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span>
+                            <h3>Public portal &amp; tracking</h3>
+                        </div>
+                        <p>Citizens submit on the portal and track their own case status.</p>
+                    </div>
+                    <div class="card line-card">
+                        <div class="card-head">
+                            <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg></span>
+                            <h3>Offline</h3>
+                        </div>
+                        <p>Walk-in visits and physical mail are entered as a petition.</p>
+                    </div>
+                </div>
+                <p class="note">Every channel creates one common petition record. No separate file per channel.</p>
+            </div>
+        </section>
+
+        <section class="slide" id="fir-generation" data-section="FIR Generation" aria-labelledby="title-1">
+            <div class="inner">
+                <div class="kicker">Slide 02</div>
+                <h2 id="title-1">FIR Generation &amp; Management</h2>
+                <div class="grid g4">
+                    <div class="card line-card">
                         <div class="card-head">
                             <span class="icon green" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg></span>
-                            <span class="section-chip" style="margin:0">WHAT THIS CHANGE ADDS</span>
+                            <h3>Auto-fill</h3>
                         </div>
-                        <h3>Automatic data flow into a digital case file</h3>
-                        <p>Petition data flows into FIR Information. Completed FIR opens Case Diary. Templates, unique
-                            document numbers, digital arrest, search, signatures and court submission complete the
-                            record.</p>
+                        <p>Petition data flows into FIR Information automatically.</p>
                     </div>
-                </div>
-                <p class="source-note">VCEMS / Petition → FIR → Case Diary → court. No duplicate entry of petition data.
-                </p>
-            </div>
-        </section>
-
-        <section class="slide" id="platform" data-section="Existing System" aria-labelledby="title-2">
-            <div class="inner">
-                <div class="kicker">Existing System</div>
-                <h2 id="title-2">Existing System — Platform Overview</h2>
-                <p class="lead">VCEMS is an operational, web-based platform supporting the digital handling of
-                    vigilance-related activities within the Vigilance and Anti-Corruption Bureau (VACB).</p>
-                <div class="metrics">
-                    <div class="card metric">
-                        <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
-                        <div class="num">1,000+</div>
-                        <p>Registered users</p>
-                    </div>
-                    <div class="card metric">
-                        <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-8h6v8"/><path d="M8 6h.01M12 6h.01M16 6h.01M8 10h.01M12 10h.01M16 10h.01"/></svg></span>
-                        <div class="num">24</div>
-                        <p>Offices statewide</p>
-                    </div>
-                    <div class="card metric">
-                        <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg></span>
-                        <div class="num">~500</div>
-                        <p>FIRs registered / year</p>
-                    </div>
-                </div>
-                <div class="two-col">
-                    <div class="card">
+                    <div class="card line-card">
                         <div class="card-head">
-                            <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 4v16"/></svg></span>
-                            <h3>Core modules today</h3>
+                            <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></span>
+                            <h3>Officer review</h3>
                         </div>
-                        <ul>
-                            <li>General Diary &amp; FIR Registration</li>
-                            <li>User Management</li>
-                            <li>Unit Management</li>
-                            <li>Integration with stakeholders for structured, secure data handling</li>
-                        </ul>
-                        <p class="note">The existing system is organised around Master, Activities and Reports. FIR
-                            documentation is the core focus.</p>
-                        <div class="chips">
-                            <span class="chip">FIR Info</span>
-                            <span class="chip">Acts</span>
-                            <span class="chip">Occurrence</span>
-                            <span class="chip">Complaints</span>
-                            <span class="chip">FIR Content</span>
-                            <span class="chip">Accused</span>
-                            <span class="chip">Signature</span>
-                            <span class="chip">Upload</span>
-                            <span class="chip">Action</span>
-                        </div>
+                        <p>Officers review the information and continue the FIR process.</p>
                     </div>
-                    <div class="gap-box">
-                        <div class="card-head">
-                            <span class="icon amber" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4M12 17h.01"/></svg></span>
-                            <h3>The Digital Gap</h3>
-                        </div>
-                        <p>Despite this digital infrastructure, the investigation process — from entrustment to
-                            final report — is still handled manually. Documents are prepared and maintained in physical
-                            form, requiring manual compilation, approvals and communication between stakeholders.</p>
-                        <p class="emphasis">This results in delays, added workload, and risk of losing critical case
-                            information.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="slide" id="manual-process" data-section="Existing System" aria-labelledby="title-3">
-            <div class="inner">
-                <div class="kicker">Existing System</div>
-                <h2 id="title-3">Existing System — Manual Investigation Process</h2>
-                <p class="lead">FIR registration is digital. The investigation that follows is still a paper-based chain
-                    of documentation, approvals and physical court submission.</p>
-                <div class="two-col">
-                    <div>
-                        <div class="row-title">Today's paper-based flow</div>
-                        <ol class="process">
-                            <li>
-                                <span class="step-number">1</span>
-                                <div>
-                                    <h3>FIR registered by SHO / authorized officer</h3>
-                                </div>
-                            </li>
-                            <li>
-                                <span class="step-number">2</span>
-                                <div>
-                                    <h3>Case entrusted to an Investigating Officer (IO)</h3>
-                                </div>
-                            </li>
-                            <li>
-                                <span class="step-number">3</span>
-                                <div>
-                                    <h3>Field evidence collection &amp; interrogation</h3>
-                                </div>
-                            </li>
-                            <li>
-                                <span class="step-number">4</span>
-                                <div>
-                                    <h3>Reports, memos &amp; arrests (if any) documented</h3>
-                                </div>
-                            </li>
-                            <li>
-                                <span class="step-number">5</span>
-                                <div>
-                                    <h3>Stage-wise paper approvals to supervisory officers</h3>
-                                </div>
-                            </li>
-                            <li>
-                                <span class="step-number">6</span>
-                                <div>
-                                    <h3>Final Report prepared manually &amp; submitted physically to court</h3>
-                                </div>
-                            </li>
-                        </ol>
-                    </div>
-                    <div>
-                        <div class="row-title kicker danger" style="margin-top:0">Key challenges</div>
-                        <ul class="challenges">
-                            <li>
-                                <span class="dot" aria-hidden="true"></span>
-                                <div>
-                                    <h3>Manual &amp; paper-based</h3>
-                                    <p>Documents are prepared, compiled and approved physically at every stage.</p>
-                                </div>
-                            </li>
-                            <li>
-                                <span class="dot" aria-hidden="true"></span>
-                                <div>
-                                    <h3>No real-time tracking</h3>
-                                    <p>Difficult to monitor case progress or enforce timelines.</p>
-                                </div>
-                            </li>
-                            <li>
-                                <span class="dot" aria-hidden="true"></span>
-                                <div>
-                                    <h3>Fragmented approvals</h3>
-                                    <p>Separate paper sign-offs across officers, units and the Directorate.</p>
-                                </div>
-                            </li>
-                            <li>
-                                <span class="dot" aria-hidden="true"></span>
-                                <div>
-                                    <h3>Risk of data loss</h3>
-                                    <p>Physical records are prone to misplacement or damage.</p>
-                                </div>
-                            </li>
-                            <li>
-                                <span class="dot" aria-hidden="true"></span>
-                                <div>
-                                    <h3>Slower decision-making</h3>
-                                    <p>Increased administrative workload and turnaround time.</p>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="slide" id="how-it-changes" data-section="How the System Changes" aria-labelledby="title-4">
-            <div class="inner">
-                <div class="kicker">How the existing system changes</div>
-                <h2 id="title-4">How the existing system changes</h2>
-                <p class="lead">Petition data fills FIR Information automatically. Completed FIR opens the first Case
-                    Diary entries. Duplicate entry is eliminated. Officers review; they do not retype petition data.</p>
-                <div class="flow tight">
-                    <div class="node">
-                        <span class="icon green" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M8 13h8M8 17h6"/></svg></span>
-                        <span class="mini-num">01</span>
-                        <b>Petition finalized</b>
-                        <p>Structured petition record is the source. No second capture of the same facts.</p>
-                    </div>
-                    <div class="arrow" aria-hidden="true">→</div>
-                    <div class="node">
-                        <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></span>
-                        <span class="mini-num">02</span>
-                        <b>FIR Information</b>
-                        <p>Auto-filled from the Petition Module. Officers review and continue the FIR process here.</p>
-                    </div>
-                    <div class="arrow" aria-hidden="true">→</div>
-                    <div class="node">
-                        <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></span>
-                        <span class="mini-num">03</span>
-                        <b>FIR Module complete</b>
-                        <p>FIR-related data flows into the FIR Module. This becomes the foundation for case work.</p>
-                    </div>
-                    <div class="arrow" aria-hidden="true">→</div>
-                    <div class="node">
-                        <span class="icon orange" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span>
-                        <span class="mini-num">04</span>
-                        <b>Case Diary starts</b>
-                        <p>The first Case Diary section is created automatically. It is the single record for the case.</p>
-                    </div>
-                    <div class="arrow" aria-hidden="true">→</div>
-                    <div class="node">
-                        <span class="icon amber" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18"/><path d="M5 8h14M5 12h14M5 16h10"/></svg></span>
-                        <span class="mini-num">05</span>
-                        <b>Templates, arrest, court</b>
-                        <p>Standard documents, digital arrest, search, signatures and court submission stay on the
-                            same file.</p>
-                    </div>
-                </div>
-                <div class="before-after">
-                    <div class="callout warn"><strong>Before:</strong> paper after FIR — memos, arrests, approvals and
-                        final report compiled physically.</div>
-                    <div class="callout"><strong>After:</strong> digitized Case Diary as the single record for every
-                        document and activity through to court.</div>
-                </div>
-            </div>
-        </section>
-
-        <section class="slide" id="petition-to-fir" data-section="Petition to FIR" aria-labelledby="title-5">
-            <div class="inner">
-                <div class="kicker">New feature</div>
-                <h2 id="title-5">Petition to FIR workflow</h2>
-                <p class="lead">After petition finalization, all relevant petition data flows automatically into the FIR
-                    Information section. Officers review the information and proceed with the FIR process from this
-                    section.</p>
-                <div class="flow spaced">
-                    <div class="node">
-                        <span class="icon green" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></span>
-                        <span class="mini-num">01</span>
-                        <b>Petition Module</b>
-                        <p>The data displayed in FIR Information is sourced directly from the Petition Module.</p>
-                    </div>
-                    <div class="arrow" aria-hidden="true">→</div>
-                    <div class="node">
-                        <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></span>
-                        <span class="mini-num">02</span>
-                        <b>FIR Information — review</b>
-                        <p>No manual data editing is required in the FIR Information section. Officers review, then
-                            continue the FIR process.</p>
-                    </div>
-                    <div class="arrow" aria-hidden="true">→</div>
-                    <div class="node">
-                        <span class="icon orange" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8h10M7 12h10M7 16h6"/></svg></span>
-                        <span class="mini-num">03</span>
-                        <b>FIR Module</b>
-                        <p>Once the FIR process is completed, all FIR-related data flows automatically into the FIR
-                            Module.</p>
-                    </div>
-                </div>
-                <div class="grid g2 spaced">
-                    <div class="card">
+                    <div class="card line-card">
                         <div class="card-head">
                             <span class="icon green" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.5 0 10-4.5 10-10S17.5 2 12 2 2 6.5 2 12s4.5 10 10 10z"/><path d="m8 12 3 3 5-6"/></svg></span>
                             <h3>No re-entry</h3>
                         </div>
-                        <p>Petition facts are not typed again into FIR Information. The same structured fields carry
-                            forward.</p>
+                        <p>No manual data editing is required in FIR Information.</p>
                     </div>
-                    <div class="card primary">
+                    <div class="card line-card">
                         <div class="card-head">
-                            <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg></span>
-                            <h3>Officer remains in control</h3>
+                            <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></span>
+                            <h3>Petition source</h3>
                         </div>
-                        <p>Officers review the auto-filled FIR Information and proceed with FIR Info, Acts, Occurrence,
-                            Complaints, Content, Accused, Signature, Upload and Action.</p>
+                        <p>Displayed data is sourced directly from the Petition Module.</p>
+                    </div>
+                    <div class="card line-card">
+                        <div class="card-head">
+                            <span class="icon orange" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8h10M7 12h10M7 16h6"/></svg></span>
+                            <h3>FIR Module</h3>
+                        </div>
+                        <p>Completed FIR data flows automatically into the FIR Module.</p>
+                    </div>
+                    <div class="card line-card">
+                        <div class="card-head">
+                            <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 4v16"/></svg></span>
+                            <h3>FIR activities</h3>
+                        </div>
+                        <p>FIR Info, Acts, Occurrence, Complaints, FIR Content, Accused.</p>
+                    </div>
+                    <div class="card line-card">
+                        <div class="card-head">
+                            <span class="icon amber" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></span>
+                            <h3>Signature &amp; upload</h3>
+                        </div>
+                        <p>Signature, Upload and Action remain part of the FIR process.</p>
+                    </div>
+                    <div class="card line-card">
+                        <div class="card-head">
+                            <span class="icon green" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></span>
+                            <h3>VCEMS link</h3>
+                        </div>
+                        <p>FIR is the foundation for later VCEMS case-processing activities.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="slide" id="fir-vcems" data-section="FIR &amp; VCEMS" aria-labelledby="title-6">
+        <section class="slide" id="case-management" data-section="Case Management" aria-labelledby="title-2">
             <div class="inner">
-                <div class="kicker">New feature</div>
-                <h2 id="title-6">FIR &amp; VCEMS integration</h2>
-                <p class="lead">The VCEMS section will be integrated with the FIR Module. Once the FIR section is
-                    completed, the first section of the Case Diary will be automatically created.</p>
-                <div class="grid g2">
-                    <div class="card primary">
-                        <div class="card-head">
+                <div class="kicker">Slide 03</div>
+                <h2 id="title-2">Case Management System</h2>
+                <div class="ai-layout">
+                    <div class="ai-stack">
+                        <div class="card">
                             <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></span>
-                            <h3>FIR Module connected to VCEMS</h3>
+                            <h3>FIR integration</h3>
                         </div>
-                        <p>FIR-related information serves as the foundation for subsequent case-processing activities.
-                            Case Diary, documents, templates and arrest work all start from this completed FIR record.
-                        </p>
+                        <div class="card">
+                            <span class="icon orange" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg></span>
+                            <h3>Templates</h3>
+                        </div>
+                        <div class="card">
+                            <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
+                            <h3>Digital arrest</h3>
+                        </div>
+                        <div class="card">
+                            <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span>
+                            <h3>Search &amp; download</h3>
+                        </div>
+                        <div class="card">
+                            <span class="icon amber" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span>
+                            <h3>Checklists</h3>
+                        </div>
                     </div>
-                    <div class="card">
-                        <div class="card-head">
-                            <span class="icon orange" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M8 7h8M8 11h8"/></svg></span>
-                            <h3>First Case Diary section auto-created</h3>
+                    <div class="ai-main">
+                        <div class="card">
+                            <div class="card-head">
+                                <span class="icon orange" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span>
+                                <h3>Case processing</h3>
+                            </div>
+                            <ul>
+                                <li>VCEMS is integrated with the FIR Module.</li>
+                                <li>First Case Diary section is created automatically.</li>
+                                <li>FIR data is the base for later case work.</li>
+                            </ul>
                         </div>
-                        <p>Completing FIR does not require a separate diary opening step. The first Case Diary
-                            entries are created so investigation work continues on the same digital file.</p>
-                    </div>
-                </div>
-                <div class="grid g2 spaced">
-                    <div class="card">
-                        <div class="card-head">
-                            <span class="icon green" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/><path d="M12 13h6"/></svg></span>
-                            <h3>Less duplicate data entry</h3>
+                        <div class="card primary">
+                            <div class="card-head">
+                                <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span>
+                                <h3>Documents &amp; arrest</h3>
+                            </div>
+                            <ul>
+                                <li>Templates: warrant, mahazar, exhibit, memo, arrest.</li>
+                                <li>Arrest memo: Case Diary → warrant → form → verify.</li>
+                                <li>Scan, unique number, medical report, case link.</li>
+                            </ul>
                         </div>
-                        <p>The integrated workflow reduces duplicate data entry. FIR facts are not recaptured when Case
-                            Diary work begins.</p>
-                    </div>
-                    <div class="card">
-                        <div class="card-head">
-                            <span class="icon amber" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
-                            <h3>Consistency across modules</h3>
+                        <div class="card">
+                            <div class="card-head">
+                                <span class="icon green" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10 12 15 17 10"/><path d="M12 15V3"/></svg></span>
+                                <h3>Access &amp; court</h3>
+                            </div>
+                            <ul>
+                                <li>Filter search, single download and bulk download.</li>
+                                <li>Digital signatures and digital court submission.</li>
+                                <li>Checklist tracks pending and completed activities.</li>
+                            </ul>
                         </div>
-                        <p>Petition, FIR and VCEMS share one data trail. Later documents, arrest records and court files
-                            stay aligned with the original FIR.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="slide" id="case-diary" data-section="Case Diary" aria-labelledby="title-7">
+        <section class="slide" id="ai-features" data-section="Features of AI" aria-labelledby="title-3">
             <div class="inner">
-                <div class="kicker">New feature</div>
-                <h2 id="title-7">Case Diary, documents &amp; informational reports</h2>
-                <p class="lead">Case Diary maintains all documents and information related to the particular case. The
-                    Informational Report is the initial stage of digitization and is linked to that case.</p>
-                <div class="grid g3">
-                    <div class="card">
+                <div class="kicker green">Slide 04</div>
+                <h2 id="title-3">Features of AI</h2>
+                <div class="ai-layout">
+                    <div class="ai-stack">
+                        <div class="card primary">
+                            <span class="icon green" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13M8 12h13M8 18h13"/><path d="M3 6h.01M3 12h.01M3 18h.01"/></svg></span>
+                            <h3>Summarizing</h3>
+                        </div>
+                        <div class="card primary">
+                            <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M8 10h8M8 14h8M8 18h5"/></svg></span>
+                            <h3>AI Minutes</h3>
+                        </div>
+                        <div class="card">
+                            <span class="icon orange" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="M11 8v6M8 11h6"/></svg></span>
+                            <h3>Field extraction</h3>
+                        </div>
+                        <div class="card">
+                            <span class="icon amber" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m5 8 6 6M4 14l6-6 2-3"/><path d="M2 5h12M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg></span>
+                            <h3>Language &amp; OCR</h3>
+                        </div>
+                        <div class="card">
+                            <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span>
+                            <h3>Department routing</h3>
+                        </div>
+                    </div>
+                    <div class="ai-main">
+                        <div class="card">
+                            <div class="card-head">
+                                <span class="icon green" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13M8 12h13M8 18h13"/><path d="M3 6h.01M3 12h.01M3 18h.01"/></svg></span>
+                                <h3>Summarizing</h3>
+                            </div>
+                            <ul>
+                                <li>Short summary for quick reading.</li>
+                                <li>Detailed summary with key facts.</li>
+                                <li>Linked to the petition or case record.</li>
+                            </ul>
+                        </div>
+                        <div class="card primary">
+                            <div class="card-head">
+                                <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M8 10h8M8 14h8M8 18h5"/></svg></span>
+                                <h3>AI Minutes</h3>
+                            </div>
+                            <ul>
+                                <li>Draft minutes of sittings, hearings and meetings.</li>
+                                <li>Attendance, decisions and follow-up actions.</li>
+                                <li>Officer verifies before minutes are saved.</li>
+                            </ul>
+                        </div>
+                        <div class="card">
+                            <div class="card-head">
+                                <span class="icon orange" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg></span>
+                                <h3>Understand &amp; extract</h3>
+                            </div>
+                            <ul>
+                                <li>OCR, handwriting and multilingual papers.</li>
+                                <li>People, places, dates, amounts, allegations.</li>
+                                <li>Suggested department using configured rules.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="slide" id="case-diary" data-section="Case Diary" aria-labelledby="title-4">
+            <div class="inner">
+                <div class="kicker">Slide 05</div>
+                <h2 id="title-4">Case Diary</h2>
+                <div class="grid g4">
+                    <div class="card line-card">
                         <div class="card-head">
                             <span class="icon orange" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span>
-                            <h3>Case Diary</h3>
+                            <h3>Auto-created</h3>
                         </div>
-                        <p>The single record for every document and activity on the case. Auto-initiated when FIR is
-                            completed. Subsequent investigation work is recorded here, not on a parallel paper file.
-                        </p>
+                        <p>First Case Diary section is created when FIR is completed.</p>
                     </div>
-                    <div class="card primary">
+                    <div class="card line-card">
+                        <div class="card-head">
+                            <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></span>
+                            <h3>Single record</h3>
+                        </div>
+                        <p>Holds all documents and information for that case.</p>
+                    </div>
+                    <div class="card line-card">
                         <div class="card-head">
                             <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h16M4 15h16M10 3 8 21M16 3l-2 18"/></svg></span>
-                            <h3>Document identity</h3>
+                            <h3>Document ID</h3>
                         </div>
-                        <p>Each document has a unique Document ID / Number. Every document and relevant item associated
-                            with the case is assigned a unique number for identification and tracking.</p>
-                        <ul>
-                            <li>Document ID / Number</li>
-                            <li>Number of pages</li>
-                            <li>Date</li>
-                            <li>Case-related document details</li>
-                        </ul>
+                        <p>Each document has a unique Document ID / Number.</p>
                     </div>
-                    <div class="card">
+                    <div class="card line-card">
+                        <div class="card-head">
+                            <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8"/></svg></span>
+                            <h3>Page count</h3>
+                        </div>
+                        <p>Document information includes number of pages.</p>
+                    </div>
+                    <div class="card line-card">
+                        <div class="card-head">
+                            <span class="icon amber" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></span>
+                            <h3>Date</h3>
+                        </div>
+                        <p>Each document stores its date with the case record.</p>
+                    </div>
+                    <div class="card line-card">
+                        <div class="card-head">
+                            <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg></span>
+                            <h3>Case details</h3>
+                        </div>
+                        <p>Case-related document details stay on the same file.</p>
+                    </div>
+                    <div class="card line-card">
                         <div class="card-head">
                             <span class="icon green" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span>
-                            <h3>Informational Report</h3>
+                            <h3>Informational report</h3>
                         </div>
-                        <p>The initial stage of the digitization process. Report information is converted into a structured
-                            digital format, linked with the respective case, and becomes a centralized, searchable
-                            digital record for case processing.</p>
+                        <p>Reports are digitized, linked to the case and searchable.</p>
+                    </div>
+                    <div class="card line-card">
+                        <div class="card-head">
+                            <span class="icon orange" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
+                            <h3>Traceability</h3>
+                        </div>
+                        <p>Every case item gets a unique number for tracking.</p>
                     </div>
                 </div>
-            </div>
-        </section>
-
-        <section class="slide dense" id="templates-arrest" data-section="Templates &amp; Arrest" aria-labelledby="title-8">
-            <div class="inner">
-                <div class="kicker">New feature — detailed workflow</div>
-                <h2 id="title-8">Standardized templates &amp; digital arrest</h2>
-                <p class="lead">Authorized templates keep case documents consistent. Arrest memo and arrest information
-                    are completed digitally and linked to the Case Diary.</p>
-
-                <div class="row-title">Authorized templates — officers select, they do not draft from scratch</div>
-                <div class="grid g6">
-                    <div class="card mini-card">
-                        <span class="icon orange" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M5 12V5a2 2 0 0 1 2-2h7l5 5v4"/><path d="M5 21h6M5 17h10"/><path d="m15 19 2 2 4-4"/></svg></span>
-                        <h3>Warrant</h3>
-                        <p>Warrant template</p>
-                    </div>
-                    <div class="card mini-card">
-                        <span class="icon orange" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg></span>
-                        <h3>Mahazar</h3>
-                        <p>Mahazar template</p>
-                    </div>
-                    <div class="card mini-card">
-                        <span class="icon orange" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></span>
-                        <h3>Case property</h3>
-                        <p>Exhibit template</p>
-                    </div>
-                    <div class="card mini-card">
-                        <span class="icon orange" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="M11 8v6M8 11h6"/></svg></span>
-                        <h3>Inspection memo</h3>
-                        <p>Inspection memo</p>
-                    </div>
-                    <div class="card mini-card">
-                        <span class="icon orange" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
-                        <h3>Arrest request</h3>
-                        <p>Arrest request</p>
-                    </div>
-                    <div class="card mini-card">
-                        <span class="icon orange" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></span>
-                        <h3>Other documents</h3>
-                        <p>Other case templates</p>
-                    </div>
-                </div>
-
-                <div class="row-title">Digital arrest memo — four steps</div>
-                <div class="grid g4 steps-row">
-                    <div class="card">
-                        <span class="mini-num">01</span>
-                        <h3>Select Case Diary</h3>
-                        <p>Officers select the relevant Case Diary for the arrest.</p>
-                    </div>
-                    <div class="card">
-                        <span class="mini-num">02</span>
-                        <h3>Select warrant</h3>
-                        <p>The required warrant is selected from the case.</p>
-                    </div>
-                    <div class="card">
-                        <span class="mini-num">03</span>
-                        <h3>Complete memo digitally</h3>
-                        <p>The Arrest Memo form is completed and submitted digitally.</p>
-                    </div>
-                    <div class="card">
-                        <span class="mini-num">04</span>
-                        <h3>Officer verification</h3>
-                        <p>The concerned officer verifies the submitted information.</p>
-                    </div>
-                </div>
-
-                <div class="row-title">Arrest Information Module</div>
-                <div class="grid g5">
-                    <div class="card mini-card">
-                        <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8 12 3 7 8"/><path d="M12 3v12"/></svg></span>
-                        <h3>Scan &amp; upload</h3>
-                        <p>Documents scanned and uploaded digitally.</p>
-                    </div>
-                    <div class="card mini-card">
-                        <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h16M4 15h16M10 3 8 21M16 3l-2 18"/></svg></span>
-                        <h3>Unique number</h3>
-                        <p>Auto-assigned to each uploaded document.</p>
-                    </div>
-                    <div class="card mini-card">
-                        <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></span>
-                        <h3>Linked to case</h3>
-                        <p>All arrest documents linked to the case.</p>
-                    </div>
-                    <div class="card mini-card">
-                        <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span>
-                        <h3>Medical report</h3>
-                        <p>Medical Report upload is provided.</p>
-                    </div>
-                    <div class="card mini-card">
-                        <span class="icon green" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></span>
-                        <h3>Central record</h3>
-                        <p>One digital file of arrest information.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="slide" id="search-download" data-section="Search &amp; Download" aria-labelledby="title-9">
-            <div class="inner">
-                <div class="kicker">New feature</div>
-                <h2 id="title-9">Case file search &amp; download</h2>
-                <p class="lead">Easy access to all case-related documents through a centralized interface. Filter-based
-                    search locates specific case files. Download options cover a single file or a complete set.</p>
-                <div class="grid g3">
-                    <div class="card">
-                        <div class="card-head">
-                            <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg></span>
-                            <h3>Filter-based search</h3>
-                        </div>
-                        <p>Locate specific case files using filters instead of browsing physical bundles.</p>
-                    </div>
-                    <div class="card">
-                        <div class="card-head">
-                            <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="M11 8v6M8 11h6"/></svg></span>
-                            <h3>Multiple search criteria</h3>
-                        </div>
-                        <p>Multiple search options for faster document retrieval across the case file.</p>
-                    </div>
-                    <div class="card">
-                        <div class="card-head">
-                            <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10 12 15 17 10"/><path d="M12 15V3"/></svg></span>
-                            <h3>Single file download</h3>
-                        </div>
-                        <p>Download one selected document when only that item is required.</p>
-                    </div>
-                    <div class="card">
-                        <div class="card-head">
-                            <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8 17 12 21 16 17"/><path d="M12 12v9"/><path d="M20.88 18.09A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.29"/></svg></span>
-                            <h3>Bulk download</h3>
-                        </div>
-                        <p>Download multiple files simultaneously, including complete case files.</p>
-                    </div>
-                    <div class="card primary">
-                        <div class="card-head">
-                            <span class="icon green" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></span>
-                            <h3>Centralized access</h3>
-                        </div>
-                        <p>All case-related documents are available from one interface, with unique numbering for
-                            traceability.</p>
-                    </div>
-                    <div class="card">
-                        <div class="card-head">
-                            <span class="icon amber" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M8 13h2M8 17h8"/></svg></span>
-                            <h3>Complete case file</h3>
-                        </div>
-                        <p>Provide download options for complete case files when the full digital record is required.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="slide" id="digitization" data-section="Digitization &amp; Court" aria-labelledby="title-10">
-            <div class="inner">
-                <div class="kicker">New feature</div>
-                <h2 id="title-10">Complete system digitization &amp; modernization</h2>
-                <p class="lead">Digitization and modernization of the complete case management workflow. Reduce
-                    dependency on physical documentation. Digitally manage case-related documents and records.</p>
-                <div class="grid g3">
-                    <div class="card">
-                        <div class="card-head">
-                            <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></span>
-                            <h3>Digital signatures</h3>
-                        </div>
-                        <p>Implement digital signature capabilities so approvals and records can be signed without a
-                            paper trail.</p>
-                    </div>
-                    <div class="card primary">
-                        <div class="card-head">
-                            <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22 11 13 2 9z"/></svg></span>
-                            <h3>Digital submission to court</h3>
-                        </div>
-                        <p>Enable digital submission to court so the Final Report and supporting records need not move
-                            only as physical files.</p>
-                    </div>
-                    <div class="card">
-                        <div class="card-head">
-                            <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M8 13h8M8 17h8"/></svg></span>
-                            <h3>Digital case records</h3>
-                        </div>
-                        <p>Case-related documents and records are managed digitally from complaint through disposal.</p>
-                    </div>
-                    <div class="card">
-                        <div class="card-head">
-                            <span class="icon green" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></span>
-                            <h3>Transparency &amp; traceability</h3>
-                        </div>
-                        <p>Improve transparency, traceability and accessibility of the case file for officers and
-                            supervisory review.</p>
-                    </div>
-                    <div class="card">
-                        <div class="card-head">
-                            <span class="icon amber" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 11c1.66 0 3-1.2 3-2.67C15 5.6 12 3 12 3S9 5.6 9 8.33C9 9.8 10.34 11 12 11z"/><path d="M12 11v10"/><path d="M8 21h8"/><path d="M7 15c-1.5.5-3 2-3 4"/><path d="M17 15c1.5.5 3 2 3 4"/></svg></span>
-                            <h3>Aadhaar verification</h3>
-                        </div>
-                        <p>Aadhaar verification capability can be incorporated, subject to feasibility and required
-                            authorization / integration.</p>
-                    </div>
-                    <div class="callout warn">
-                        <strong>Note on Aadhaar:</strong> this is not a committed go-live feature. It is included only
-                        where feasibility, authorization and integration are confirmed.
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="slide" id="checklist-progress" data-section="Checklist &amp; Progress" aria-labelledby="title-11">
-            <div class="inner">
-                <div class="kicker">New feature</div>
-                <h2 id="title-11">Activity-based checklist &amp; progress monitoring</h2>
-                <p class="lead">Each major activity contains a predefined set of sub-activities. Checklist completion
-                    is used to monitor activity progress and to generate management-level reports.</p>
-                <div class="two-col">
-                    <div class="card">
-                        <div class="card-head">
-                            <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span>
-                            <h3>Checklist for every activity</h3>
-                        </div>
-                        <p>A dedicated checklist is created for every activity. Officers can clearly identify the
-                            activities that must be completed before closing an activity.</p>
-                        <ul>
-                            <li>Each major activity has a predefined set of sub-activities.</li>
-                            <li>Each activity has a predefined checklist.</li>
-                            <li>Checklist-based processing ensures required steps are not missed.</li>
-                        </ul>
-                    </div>
-                    <div class="card primary">
-                        <div class="card-head">
-                            <span class="icon amber" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12 18 12 15 21 9 3 6 12 2 12"/></svg></span>
-                            <h3>What officers and management can track</h3>
-                        </div>
-                        <ul class="track-list">
-                            <li>Activity status</li>
-                            <li>Sub-activity completion</li>
-                            <li>Pending activities</li>
-                            <li>Completed activities</li>
-                            <li>Overall case progress</li>
-                        </ul>
-                        <p class="note">Reports are generated from activity and checklist completion. This supports
-                            monitoring, review and management-level reporting, with better visibility into each case.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="slide" id="benefits" data-section="Overall Benefits" aria-labelledby="title-12">
-            <div class="inner">
-                <div class="kicker">Outcome</div>
-                <h2 id="title-12">Overall benefits</h2>
-                <p class="lead">What the integrated Petition → FIR → VCEMS workflow delivers end to end.</p>
-                <div class="pills">
-                    <span class="pill">Automatic data flow: Petition → FIR → VCEMS</span>
-                    <span class="pill">No duplicate data entry</span>
-                    <span class="pill">Standardized case documentation</span>
-                    <span class="pill">Unique document numbering &amp; traceability</span>
-                    <span class="pill">Digital arrest &amp; case diary processing</span>
-                    <span class="pill">Advanced search + single / bulk download</span>
-                    <span class="pill">Digital signatures &amp; digital court submission</span>
-                    <span class="pill">Checklist-based activity monitoring</span>
-                    <span class="pill">Improved transparency &amp; reporting</span>
-                    <span class="pill">Complete digitization &amp; modernization</span>
-                </div>
-                <div class="grid g3 spaced">
-                    <div class="card">
-                        <div class="card-head">
-                            <span class="icon green" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg></span>
-                            <h3>One data trail</h3>
-                        </div>
-                        <p>Petition facts fill FIR. FIR opens Case Diary. Later documents stay on the same numbered
-                            file.</p>
-                    </div>
-                    <div class="card">
-                        <div class="card-head">
-                            <span class="icon orange" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span>
-                            <h3>Standard work</h3>
-                        </div>
-                        <p>Authorized templates, unique IDs and checklists keep documentation consistent across units.</p>
-                    </div>
-                    <div class="card">
-                        <div class="card-head">
-                            <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
-                            <h3>Supervisory visibility</h3>
-                        </div>
-                        <p>Activity status, pending work and management reports come from checklist completion, not
-                            paper follow-up.</p>
-                    </div>
-                </div>
-                <p class="source-note">Fully digitized record from initial complaint to final disposal / digital court
-                    submission.</p>
             </div>
         </section>
 
     </main>
 
-    <footer class="bottom-bar"><span class="bottom-label">VCEMS / Case Workflow Enhancement</span>
+    <footer class="bottom-bar"><span class="bottom-label">VCEMS / Petition · FIR · Case · AI · Diary</span>
         <nav class="controls" aria-label="Presentation navigation"><button class="tool" id="prevButton"
                 aria-label="Previous slide" title="Previous slide (Left arrow)">←</button><span class="count"
                 id="count">01 / 09</span><button class="tool" id="nextButton" aria-label="Next slide"
@@ -2526,24 +2290,25 @@
         </div>
         <div class="dialog-body">
             <h3>Design reference</h3>
-            <p><cite>slide-starterkit.html</cite>: dark blue and cyan theme, slide navigation, cards, process diagrams
-                and Lucide-style icons.</p>
-            <h3>Existing system</h3>
-            <p>VCEMS is an operational web platform for VACB. Scale used in this deck: 1,000+ registered users, 24
-                offices, ~500 FIRs per year. Core modules today: General Diary / FIR Registration, User Management, Unit
-                Management, and stakeholder integration. FIR Activities include FIR Info, Acts, Occurrence,
-                Complaints, FIR Content, Accused, Signature, Upload and Action. Investigation after FIR remains
-                paper-based.</p>
-            <h3>Proposed change</h3>
-            <p>Petition data auto-fills FIR Information with no re-entry. Completed FIR auto-creates the first Case
-                Diary section. Case Diary holds uniquely numbered documents. Informational reports are digitized.
-                Authorized templates, digital arrest memo, arrest information (including medical reports), search,
-                single/bulk download, digital signatures and digital court submission follow. Checklist completion
-                drives progress monitoring and management reports. Aadhaar verification is subject to feasibility and
-                authorization.</p>
-            <h3>Presentation scope</h3>
-            <p>This HTML describes proposed VCEMS enhancement capabilities. It does not connect to live VCEMS
-                services.</p>
+            <p>Dark blue and cyan VCEMS kit. Five slides: Petition intake, FIR Generation &amp; Management, Case
+                Management System, Features of AI, and Case Diary. Small cards with one-line points.</p>
+            <h3>Petition intake</h3>
+            <p>Channels: IVR / helpline, social media listening, OCR reading, email, WhatsApp, QR petition form, public
+                portal with case tracking, and offline walk-in or mail. All channels create one common petition
+                record. The public can create a petition by QR or portal and track their case on the portal.</p>
+            <h3>FIR Generation &amp; Management</h3>
+            <p>Petition data auto-fills FIR Information. Officers review with no re-entry. Completed FIR flows into the
+                FIR Module. FIR activities include FIR Info, Acts, Occurrence, Complaints, FIR Content, Accused,
+                Signature, Upload and Action.</p>
+            <h3>Case Management System</h3>
+            <p>VCEMS is integrated with FIR. Case Diary starts automatically. Templates, digital arrest, search,
+                download, digital signatures, court submission and checklists support case work.</p>
+            <h3>Features of AI</h3>
+            <p>Summarizing, AI Minutes, field extraction, language and OCR, and department routing. Officers review
+                every AI draft.</p>
+            <h3>Case Diary</h3>
+            <p>Single case record with unique document IDs, page count, date, digitized informational reports and
+                traceability.</p>
         </div>
     </dialog>
 
