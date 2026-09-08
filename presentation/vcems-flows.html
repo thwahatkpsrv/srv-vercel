@@ -1,0 +1,2645 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="dark">
+    <meta name="description"
+        content="VCEMS enhancement: from the existing FIR platform to a digitized case, document and arrest workflow through to court submission.">
+    <title>VCEMS | Existing System to Digitized Case Workflow</title>
+    <style>
+        :root {
+            --bg: #07111f;
+            --panel: #0d1b2e;
+            --panel2: #11243b;
+            --text: #eaf2ff;
+            --muted: #a8bdd3;
+            --blue: #2f8cff;
+            --cyan: #25d9ff;
+            --green: #42d392;
+            --amber: #ffbf5b;
+            --danger: #ff7a86;
+            --orange: #ff9a4a;
+            --line: rgba(255, 255, 255, .12);
+            --shadow: 0 24px 70px rgba(0, 0, 0, .22)
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        html,
+        body {
+            margin: 0;
+            min-height: 100%;
+            background: #030912;
+            color: var(--text);
+            font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif
+        }
+
+        body {
+            overflow-x: hidden
+        }
+
+        button {
+            font: inherit
+        }
+
+        button:focus-visible,
+        a:focus-visible,
+        summary:focus-visible {
+            outline: 3px solid var(--cyan);
+            outline-offset: 4px
+        }
+
+        a {
+            color: var(--cyan)
+        }
+
+        .slide {
+            display: none;
+            position: relative;
+            min-height: 100vh;
+            min-height: 100dvh;
+            padding: 94px 6.5vw 86px;
+            overflow: hidden;
+            background: radial-gradient(circle at 82% 18%, rgba(47, 140, 255, .16), transparent 30%), radial-gradient(circle at 8% 85%, rgba(37, 217, 255, .08), transparent 26%), linear-gradient(135deg, #06101d, #08182a 55%, #06111e)
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column
+        }
+
+        .inner {
+            width: 100%;
+            max-width: 1440px;
+            margin: auto
+        }
+
+        .kicker {
+            font-size: 12px;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+            color: var(--cyan);
+            font-weight: 800;
+            margin-bottom: 12px
+        }
+
+        h1 {
+            font-size: clamp(44px, 4.8vw, 76px);
+            line-height: 1.06;
+            letter-spacing: -.035em;
+            margin: 14px 0 22px
+        }
+
+        h2 {
+            font-size: clamp(30px, 3.1vw, 49px);
+            line-height: 1.12;
+            letter-spacing: -.028em;
+            margin: 0 0 15px
+        }
+
+        h3 {
+            font-size: 20px;
+            line-height: 1.3;
+            margin: 0 0 9px;
+            letter-spacing: -.01em
+        }
+
+        p {
+            color: var(--muted);
+            line-height: 1.55;
+            margin: 0
+        }
+
+        strong {
+            color: var(--text)
+        }
+
+        .lead {
+            font-size: 18px;
+            max-width: 1060px;
+            margin-bottom: 28px
+        }
+
+        .subtitle {
+            font-size: 23px;
+            line-height: 1.5;
+            color: #c7d7ea;
+            max-width: 930px
+        }
+
+        .small {
+            font-size: 13px
+        }
+
+        .note {
+            font-size: 12px;
+            line-height: 1.5;
+            color: #91abc4;
+            margin-top: 16px
+        }
+
+        .tag {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: .13em;
+            color: var(--cyan);
+            font-weight: 800;
+            display: block;
+            margin-bottom: 10px
+        }
+
+        .grid {
+            display: grid;
+            gap: 16px
+        }
+
+        .g2 {
+            grid-template-columns: repeat(2, minmax(0, 1fr))
+        }
+
+        .g3 {
+            grid-template-columns: repeat(3, minmax(0, 1fr))
+        }
+
+        .g4 {
+            grid-template-columns: repeat(4, minmax(0, 1fr))
+        }
+
+        .g5 {
+            grid-template-columns: repeat(5, minmax(0, 1fr))
+        }
+
+        .g6 {
+            grid-template-columns: repeat(6, minmax(0, 1fr))
+        }
+
+        .two-col {
+            display: grid;
+            grid-template-columns: 1.05fr .95fr;
+            gap: 24px
+        }
+
+        .card {
+            background: linear-gradient(180deg, rgba(17, 36, 59, .88), rgba(9, 25, 43, .88));
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            padding: 23px;
+            box-shadow: var(--shadow)
+        }
+
+        .card p {
+            font-size: 16px
+        }
+
+        .card .num {
+            font-size: 36px;
+            font-weight: 800;
+            line-height: 1.2;
+            color: #fff;
+            margin-bottom: 8px
+        }
+
+        .primary {
+            border-color: rgba(37, 217, 255, .5)
+        }
+
+        .green {
+            color: var(--green)
+        }
+
+        .amber {
+            color: var(--amber)
+        }
+
+        .spaced {
+            margin-top: 22px
+        }
+
+        .callout {
+            border-left: 3px solid var(--cyan);
+            padding: 14px 18px;
+            background: rgba(37, 217, 255, .06);
+            border-radius: 0 12px 12px 0;
+            color: #c7d9eb;
+            font-size: 15px;
+            line-height: 1.55
+        }
+
+        .callout.warn {
+            border-color: var(--amber);
+            background: rgba(255, 191, 91, .06)
+        }
+
+        ul {
+            margin: 12px 0 0;
+            padding-left: 21px;
+            color: #c2d4e7;
+            font-size: 16px;
+            line-height: 1.55
+        }
+
+        li {
+            margin: 9px 0
+        }
+
+        li::marker {
+            color: var(--cyan)
+        }
+
+        .badge {
+            display: inline-flex;
+            border: 1px solid var(--line);
+            background: rgba(255, 255, 255, .04);
+            padding: 7px 11px;
+            border-radius: 999px;
+            font-size: 12px;
+            color: #cfe0f4
+        }
+
+        .row-label {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 16px
+        }
+
+        .step-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            width: 40px;
+            height: 40px;
+            background: #183457;
+            color: var(--cyan);
+            border: 1px solid #34597b;
+            border-radius: 50%;
+            font-size: 17px;
+            font-weight: 800
+        }
+
+        .row-label h3 {
+            margin: 0
+        }
+
+        .card.big {
+            padding: 28px
+        }
+
+        .card.big h3 {
+            font-size: 24px
+        }
+
+        .card.big p {
+            font-size: 17px
+        }
+
+        .stack {
+            display: grid;
+            gap: 14px
+        }
+
+        .flow {
+            display: flex;
+            gap: 12px;
+            align-items: stretch
+        }
+
+        .node {
+            flex: 1;
+            min-width: 0;
+            background: rgba(17, 36, 59, .9);
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            padding: 21px 18px
+        }
+
+        .node b {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 18px
+        }
+
+        .node p {
+            font-size: 14px
+        }
+
+        .arrow {
+            align-self: center;
+            color: var(--cyan);
+            font-size: 28px
+        }
+
+        .mini-num {
+            display: block;
+            color: var(--cyan);
+            font-size: 12px;
+            letter-spacing: .12em;
+            margin-bottom: 14px
+        }
+
+        .bar {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            padding: 18px 22px;
+            border: 1px solid var(--line);
+            border-radius: 13px;
+            margin-top: 16px;
+            background: rgba(37, 217, 255, .035)
+        }
+
+        .bar strong {
+            min-width: 155px
+        }
+
+        .bar p {
+            font-size: 15px
+        }
+
+        .cover .inner {
+            padding: 20px 0
+        }
+
+        .cover .grid {
+            margin-top: 38px;
+            max-width: 1120px
+        }
+
+        .cover .card {
+            padding: 24px
+        }
+
+        .cover .card h3 {
+            font-size: 25px
+        }
+
+        .cover .client {
+            color: #a8bdd3;
+            font-size: 14px;
+            margin-bottom: 24px
+        }
+
+        .cover .client b {
+            color: var(--text);
+            letter-spacing: .13em;
+            margin-left: 10px
+        }
+
+        .section-chip {
+            display: inline-block;
+            color: var(--cyan);
+            font-weight: 800;
+            font-size: 13px;
+            margin-bottom: 16px;
+            letter-spacing: .1em
+        }
+
+        .appbar {
+            height: 64px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 0 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 18px;
+            background: rgba(5, 15, 27, .92);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--line);
+            z-index: 20
+        }
+
+        .brand {
+            font-size: 20px;
+            font-weight: 900;
+            letter-spacing: .07em
+        }
+
+        .brand span {
+            color: var(--cyan);
+            font-weight: 500;
+            font-size: 11px;
+            letter-spacing: .12em;
+            margin-left: 14px
+        }
+
+        .nav-left,
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 14px
+        }
+
+        .nav-section {
+            color: #9fb6ce;
+            font-size: 12px
+        }
+
+        .tool {
+            border: 1px solid var(--line);
+            background: rgba(8, 22, 38, .95);
+            color: #dcecff;
+            border-radius: 9px;
+            padding: 8px 13px;
+            cursor: pointer;
+            font-size: 13px
+        }
+
+        .tool:hover {
+            border-color: rgba(37, 217, 255, .65);
+            background: #10263f
+        }
+
+        .tool:disabled {
+            opacity: .35;
+            cursor: default
+        }
+
+        .progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--blue), var(--cyan));
+            z-index: 30;
+            transition: width .2s
+        }
+
+        .bottom-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            min-height: 56px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 28px;
+            background: rgba(5, 15, 27, .94);
+            border-top: 1px solid var(--line);
+            z-index: 20;
+            gap: 16px
+        }
+
+        .bottom-label {
+            color: #91a7be;
+            font-size: 11px;
+            letter-spacing: .04em
+        }
+
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: 8px
+        }
+
+        .count {
+            font-size: 12px;
+            min-width: 65px;
+            text-align: center;
+            font-variant-numeric: tabular-nums;
+            color: #bfd1e3
+        }
+
+        .source-note {
+            color: #718ca7;
+            font-size: 11px;
+            margin-top: 20px
+        }
+
+        .source-note b {
+            color: #9fb5c9;
+            font-weight: 500
+        }
+
+        .record {
+            border: 1px solid #2d526e;
+            border-radius: 18px;
+            background: #091a2b;
+            padding: 24px
+        }
+
+        .record-head {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 18px
+        }
+
+        .record-head h3 {
+            font-size: 20px
+        }
+
+        .record dl {
+            display: grid;
+            grid-template-columns: 155px 1fr;
+            gap: 10px 20px;
+            margin: 0;
+            font-size: 15px;
+            line-height: 1.5
+        }
+
+        .record dt {
+            color: #89a4bd
+        }
+
+        .record dd {
+            margin: 0;
+            color: #e0ecf9
+        }
+
+        .record .summary-box {
+            margin-top: 20px;
+            border-top: 1px solid var(--line);
+            padding-top: 17px
+        }
+
+        .record .summary-box p {
+            font-size: 15px
+        }
+
+        .field-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0 20px
+        }
+
+        .field-list div {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--line);
+            font-size: 15px;
+            color: #bdd1e3
+        }
+
+        .field-list b {
+            display: block;
+            color: #fff;
+            font-size: 15px;
+            margin-bottom: 4px
+        }
+
+        .step-list {
+            counter-reset: steps;
+            display: grid;
+            gap: 15px
+        }
+
+        .step-list article {
+            display: grid;
+            grid-template-columns: 36px 1fr;
+            gap: 15px;
+            align-items: start
+        }
+
+        .step-list article::before {
+            counter-increment: steps;
+            content: counter(steps);
+            height: 34px;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            background: #183457;
+            color: var(--cyan);
+            font-weight: 800
+        }
+
+        .step-list h3 {
+            font-size: 19px;
+            margin-bottom: 5px
+        }
+
+        .step-list p {
+            font-size: 15px
+        }
+
+        .case-flow {
+            list-style: none;
+            margin: 26px 0 0;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 44px 52px
+        }
+
+        .case-flow li {
+            position: relative;
+            margin: 0;
+            padding: 21px 22px;
+            border: 1px solid var(--line);
+            border-radius: 15px;
+            background: linear-gradient(180deg, #132942, #0e2034);
+            min-height: 131px;
+            display: flex;
+            gap: 15px;
+            align-items: flex-start
+        }
+
+        .case-flow h3 {
+            font-size: 19px
+        }
+
+        .case-flow p {
+            font-size: 14px;
+            line-height: 1.5
+        }
+
+        .case-flow .step-number {
+            width: 35px;
+            height: 35px;
+            font-size: 15px
+        }
+
+        .case-flow li:nth-child(1) {
+            grid-area: 1/1
+        }
+
+        .case-flow li:nth-child(2) {
+            grid-area: 1/2
+        }
+
+        .case-flow li:nth-child(3) {
+            grid-area: 1/3
+        }
+
+        .case-flow li:nth-child(4) {
+            grid-area: 2/3
+        }
+
+        .case-flow li:nth-child(5) {
+            grid-area: 2/2
+        }
+
+        .case-flow li:nth-child(6) {
+            grid-area: 2/1
+        }
+
+        .case-flow li:nth-child(7) {
+            grid-area: 3/1
+        }
+
+        .case-flow li:nth-child(8) {
+            grid-area: 3/2
+        }
+
+        .case-flow li:nth-child(9) {
+            grid-area: 3/3;
+            border-color: #25d9ff80;
+            background: linear-gradient(135deg, #1e3263, #203457)
+        }
+
+        .case-flow li:last-child .step-number {
+            background: #d5ae38;
+            border-color: #d5ae38;
+            color: #071523
+        }
+
+        .case-flow li::after {
+            content: '→';
+            position: absolute;
+            right: -42px;
+            top: calc(50% - 23px);
+            font-size: 32px;
+            color: #739ebd
+        }
+
+        .case-flow li:nth-child(3)::after,
+        .case-flow li:nth-child(6)::after {
+            content: '↓';
+            right: calc(50% - 10px);
+            top: auto;
+            bottom: -42px
+        }
+
+        .case-flow li:nth-child(4)::after,
+        .case-flow li:nth-child(5)::after {
+            content: '←';
+            right: auto;
+            left: -42px
+        }
+
+        .case-flow li:last-child::after {
+            content: none
+        }
+
+        .table-wrap {
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            overflow: hidden;
+            background: #0a1c2e
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 15px
+        }
+
+        .table th,
+        .table td {
+            border-bottom: 1px solid var(--line);
+            padding: 16px 20px;
+            text-align: left;
+            vertical-align: top;
+            line-height: 1.5
+        }
+
+        .table tr:last-child td {
+            border-bottom: 0
+        }
+
+        .table th {
+            color: var(--cyan);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: .1em;
+            background: #10263d
+        }
+
+        .table td {
+            color: #bdd0e4
+        }
+
+        .table td:first-child {
+            color: #f0f6ff;
+            font-weight: 600;
+            width: 18%
+        }
+
+        .table th:nth-child(2) {
+            width: 34%
+        }
+
+        .table th:nth-child(3) {
+            width: 48%
+        }
+
+        .architecture {
+            display: grid;
+            grid-template-columns: 1fr 1.3fr 1fr;
+            gap: 20px
+        }
+
+        .architecture .card {
+            padding: 23px
+        }
+
+        .architecture h3 {
+            font-size: 21px
+        }
+
+        .architecture p,
+        .architecture li {
+            font-size: 15px
+        }
+
+        .layer {
+            padding: 11px 0 0;
+            border-top: 1px solid var(--line);
+            margin-top: 12px
+        }
+
+        .layer strong {
+            font-size: 16px
+        }
+
+        .layer p {
+            margin-top: 5px
+        }
+
+        .timeline {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px
+        }
+
+        .phase {
+            position: relative;
+            padding: 24px 20px;
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            background: #0f2238
+        }
+
+        .phase .phase-num {
+            font-size: 35px;
+            font-weight: 800;
+            color: #366082;
+            display: block;
+            margin-bottom: 24px
+        }
+
+        .phase h3 {
+            font-size: 21px
+        }
+
+        .phase p {
+            font-size: 15px
+        }
+
+        dialog {
+            border: 1px solid #2f4d6b;
+            border-radius: 18px;
+            background: #071523;
+            color: var(--text);
+            box-shadow: 0 30px 120px #000a;
+            padding: 0;
+            width: min(760px, calc(100vw - 32px));
+            max-height: 82dvh
+        }
+
+        dialog::backdrop {
+            background: #010710bd;
+            backdrop-filter: blur(5px)
+        }
+
+        .dialog-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 24px;
+            position: sticky;
+            top: 0;
+            background: #071523;
+            border-bottom: 1px solid var(--line);
+            z-index: 1
+        }
+
+        .dialog-head h2 {
+            font-size: 23px;
+            margin: 0
+        }
+
+        .dialog-body {
+            padding: 18px 24px 25px
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px
+        }
+
+        .menu-item {
+            text-align: left;
+            padding: 12px;
+            display: flex;
+            gap: 12px;
+            align-items: baseline;
+            line-height: 1.4;
+            font-size: 13px
+        }
+
+        .menu-item span {
+            color: var(--cyan);
+            font-size: 11px
+        }
+
+        .menu-item[aria-current=true] {
+            border-color: var(--cyan);
+            background: #14324c
+        }
+
+        .dialog-body p,
+        .dialog-body li {
+            font-size: 14px
+        }
+
+        .dialog-body h3 {
+            font-size: 17px;
+            margin-top: 20px
+        }
+
+        .dialog-body h3:first-child {
+            margin-top: 0
+        }
+
+        .dialog-body ol {
+            padding-left: 22px
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0
+        }
+
+        .icon {
+            display: inline-grid;
+            place-items: center;
+            width: 40px;
+            height: 40px;
+            flex-shrink: 0;
+            border-radius: 12px;
+            background: rgba(37, 217, 255, .12);
+            border: 1px solid rgba(37, 217, 255, .28);
+            color: var(--cyan)
+        }
+
+        .icon svg {
+            width: 20px;
+            height: 20px
+        }
+
+        .icon.green {
+            background: rgba(66, 211, 146, .12);
+            border-color: rgba(66, 211, 146, .32);
+            color: var(--green)
+        }
+
+        .icon.amber {
+            background: rgba(255, 191, 91, .12);
+            border-color: rgba(255, 191, 91, .32);
+            color: var(--amber)
+        }
+
+        .icon.danger {
+            background: rgba(255, 122, 134, .12);
+            border-color: rgba(255, 122, 134, .32);
+            color: var(--danger)
+        }
+
+        .icon.orange {
+            background: rgba(255, 154, 74, .12);
+            border-color: rgba(255, 154, 74, .32);
+            color: var(--orange)
+        }
+
+        .card-head {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px
+        }
+
+        .card-head h3 {
+            margin: 0
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+            margin-bottom: 22px
+        }
+
+        .metric {
+            text-align: center;
+            padding: 22px 18px
+        }
+
+        .metric .icon {
+            margin: 0 auto 12px
+        }
+
+        .node .icon {
+            margin-bottom: 10px
+        }
+
+        .metric .num {
+            font-size: 42px;
+            margin-bottom: 4px
+        }
+
+        .metric p {
+            font-size: 14px;
+            letter-spacing: .02em
+        }
+
+        .chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 14px
+        }
+
+        .chip {
+            border: 1px solid var(--line);
+            background: rgba(255, 255, 255, .04);
+            padding: 7px 12px;
+            border-radius: 999px;
+            font-size: 12px;
+            color: #cfe0f4
+        }
+
+        .gap-box {
+            background: linear-gradient(180deg, #16304a, #0d2238);
+            border: 1px solid rgba(255, 191, 91, .35);
+            border-radius: 18px;
+            padding: 26px 24px;
+            height: 100%
+        }
+
+        .gap-box h3 {
+            color: var(--amber)
+        }
+
+        .gap-box p {
+            color: #d5e4f3;
+            font-size: 16px
+        }
+
+        .gap-box .emphasis {
+            margin-top: 16px;
+            font-style: italic;
+            color: #ffd79a;
+            font-size: 15px
+        }
+
+        .process {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            position: relative
+        }
+
+        .process::before {
+            content: '';
+            position: absolute;
+            left: 17px;
+            top: 8px;
+            bottom: 8px;
+            border-left: 2px dashed #34597b
+        }
+
+        .process li {
+            display: grid;
+            grid-template-columns: 36px 1fr;
+            gap: 14px;
+            align-items: start;
+            margin: 0 0 16px;
+            position: relative
+        }
+
+        .process li:last-child {
+            margin-bottom: 0
+        }
+
+        .process h3 {
+            font-size: 16px;
+            margin: 6px 0 0
+        }
+
+        .kicker.danger {
+            color: var(--danger)
+        }
+
+        .kicker.amber {
+            color: var(--amber)
+        }
+
+        .kicker.green {
+            color: var(--green)
+        }
+
+        .challenges {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: grid;
+            gap: 12px
+        }
+
+        .challenges li {
+            display: grid;
+            grid-template-columns: 12px 1fr;
+            gap: 12px;
+            margin: 0;
+            padding: 14px 16px;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            background: rgba(17, 36, 59, .7)
+        }
+
+        .challenges .dot {
+            width: 10px;
+            height: 10px;
+            margin-top: 6px;
+            border-radius: 50%;
+            background: var(--danger)
+        }
+
+        .challenges h3 {
+            font-size: 16px;
+            margin: 0 0 4px
+        }
+
+        .challenges p {
+            font-size: 14px
+        }
+
+        .flow .arrow {
+            flex: 0 0 auto
+        }
+
+        .flow .node b {
+            margin-top: 4px
+        }
+
+        .pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px
+        }
+
+        .pill {
+            border: 1px solid rgba(255, 154, 74, .45);
+            background: rgba(255, 154, 74, .06);
+            color: #f3e6d4;
+            padding: 11px 16px;
+            border-radius: 999px;
+            font-size: 14px;
+            line-height: 1.35
+        }
+
+        .mini-card {
+            padding: 16px 12px;
+            text-align: center
+        }
+
+        .mini-card .icon {
+            margin: 0 auto 10px
+        }
+
+        .mini-card h3 {
+            font-size: 14px;
+            margin: 0 0 6px
+        }
+
+        .mini-card p {
+            font-size: 12px;
+            line-height: 1.45
+        }
+
+        .row-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 16px 0 10px;
+            font-size: 12px;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            font-weight: 800;
+            color: var(--cyan)
+        }
+
+        .row-title:first-of-type {
+            margin-top: 0
+        }
+
+        .dense h2 {
+            font-size: clamp(26px, 2.6vw, 38px)
+        }
+
+        .dense .lead {
+            font-size: 15px;
+            margin-bottom: 14px
+        }
+
+        .dense .card {
+            padding: 16px
+        }
+
+        .slide.dense {
+            overflow-y: auto
+        }
+
+        .flow.tight .node {
+            padding: 16px 12px
+        }
+
+        .flow.tight .node b {
+            font-size: 15px
+        }
+
+        .flow.tight .node p {
+            font-size: 13px
+        }
+
+        .steps-row .card {
+            padding: 16px
+        }
+
+        .steps-row .mini-num {
+            margin-bottom: 8px
+        }
+
+        .steps-row h3 {
+            font-size: 16px
+        }
+
+        .steps-row p {
+            font-size: 13px
+        }
+
+        .before-after {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: 16px
+        }
+
+        .track-list {
+            list-style: none;
+            margin: 12px 0 0;
+            padding: 0;
+            display: grid;
+            gap: 8px
+        }
+
+        .track-list li {
+            margin: 0;
+            padding: 10px 12px;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, .03);
+            font-size: 14px;
+            color: #c2d4e7
+        }
+
+        @media(min-width:901px) and (max-height:810px) {
+            .dense .lead {
+                margin-bottom: 10px
+            }
+
+            .dense .card {
+                padding: 14px
+            }
+
+            .mini-card {
+                padding: 12px 10px
+            }
+
+            .metric .num {
+                font-size: 34px
+            }
+
+            .slide {
+                padding-top: 84px;
+                padding-bottom: 76px
+            }
+
+            h2 {
+                font-size: 36px
+            }
+
+            .lead {
+                font-size: 16px;
+                margin-bottom: 21px
+            }
+
+            .card {
+                padding: 19px
+            }
+
+            .card p {
+                font-size: 15px
+            }
+
+            .card.big {
+                padding: 22px
+            }
+
+            .card.big p {
+                font-size: 16px
+            }
+
+            .case-flow {
+                gap: 37px 48px;
+                margin-top: 18px
+            }
+
+            .case-flow li {
+                padding: 16px;
+                min-height: 113px
+            }
+
+            .case-flow h3 {
+                font-size: 17px
+            }
+
+            .case-flow p {
+                font-size: 13px
+            }
+
+            .case-flow li:nth-child(3)::after,
+            .case-flow li:nth-child(6)::after {
+                bottom: -38px
+            }
+
+            .source-note {
+                margin-top: 14px
+            }
+
+            .spaced {
+                margin-top: 17px
+            }
+
+            .callout {
+                padding: 12px 16px
+            }
+
+            .table th,
+            .table td {
+                padding: 12px 16px
+            }
+
+            .phase {
+                padding: 20px 18px
+            }
+
+            .phase .phase-num {
+                margin-bottom: 16px
+            }
+        }
+
+        @media(max-width:1100px) and (min-width:901px) {
+            .slide {
+                padding-left: 5vw;
+                padding-right: 5vw
+            }
+
+            .g5,
+            .g6 {
+                grid-template-columns: repeat(3, minmax(0, 1fr))
+            }
+
+            .g4 {
+                gap: 12px
+            }
+
+            .g4 .card {
+                padding: 17px
+            }
+
+            .g4 h3 {
+                font-size: 18px
+            }
+
+            .g4 .card p {
+                font-size: 14px
+            }
+
+            .flow {
+                gap: 8px
+            }
+
+            .node {
+                padding: 17px 13px
+            }
+
+            .node b {
+                font-size: 16px
+            }
+
+            .node p {
+                font-size: 13px
+            }
+
+            .arrow {
+                font-size: 23px
+            }
+
+            .case-flow {
+                gap: 40px
+            }
+
+            .case-flow li {
+                padding: 16px;
+                gap: 10px
+            }
+
+            .case-flow h3 {
+                font-size: 17px
+            }
+
+            .case-flow li::after {
+                right: -34px
+            }
+
+            .case-flow li:nth-child(4)::after,
+            .case-flow li:nth-child(5)::after {
+                left: -34px
+            }
+
+            .record dl {
+                grid-template-columns: 115px 1fr
+            }
+        }
+
+        @media(max-width:900px) {
+            .slide {
+                padding: 92px 6vw 92px
+            }
+
+            .inner {
+                margin: 0 auto
+            }
+
+            .g3,
+            .g4,
+            .g5,
+            .g6,
+            .metrics,
+            .before-after {
+                grid-template-columns: repeat(2, minmax(0, 1fr))
+            }
+
+            .g2,
+            .two-col,
+            .architecture {
+                grid-template-columns: 1fr
+            }
+
+            .timeline {
+                grid-template-columns: 1fr 1fr
+            }
+
+            .steps-row {
+                grid-template-columns: 1fr 1fr
+            }
+
+            .flow {
+                flex-direction: column;
+                gap: 9px
+            }
+
+            .arrow {
+                transform: rotate(90deg);
+                line-height: 1;
+                align-self: center
+            }
+
+            .node {
+                padding: 19px
+            }
+
+            .node p {
+                font-size: 15px
+            }
+
+            .node .mini-num {
+                margin-bottom: 6px
+            }
+
+            h1 {
+                font-size: 46px
+            }
+
+            h2 {
+                font-size: 34px
+            }
+
+            .lead {
+                font-size: 17px
+            }
+
+            .subtitle {
+                font-size: 20px
+            }
+
+            .brand span,
+            .nav-section {
+                display: none
+            }
+
+            .appbar {
+                padding: 0 18px
+            }
+
+            .bottom-bar {
+                padding: 10px 18px
+            }
+
+            .bottom-label {
+                max-width: 50%;
+                font-size: 10px
+            }
+
+            .cover .inner {
+                padding: 25px 0
+            }
+
+            .cover .grid {
+                margin-top: 30px
+            }
+
+            .cover .g2 {
+                grid-template-columns: 1fr
+            }
+
+            .case-flow {
+                grid-template-columns: 1fr;
+                gap: 36px
+            }
+
+            .case-flow li:nth-child(n) {
+                grid-area: auto;
+                min-height: 110px
+            }
+
+            .case-flow li:nth-child(n)::after {
+                content: '↓';
+                left: auto;
+                right: calc(50% - 10px);
+                top: auto;
+                bottom: -36px
+            }
+
+            .case-flow li:last-child::after {
+                content: none
+            }
+
+            .case-flow h3 {
+                font-size: 20px
+            }
+
+            .case-flow p {
+                font-size: 15px
+            }
+
+            .bar {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 7px
+            }
+
+            .table-wrap {
+                overflow-x: auto
+            }
+
+            .table {
+                min-width: 690px
+            }
+
+            .record dl {
+                grid-template-columns: 140px 1fr
+            }
+
+            .section-chip {
+                margin-bottom: 12px
+            }
+        }
+
+        @media(max-width:520px) {
+
+            .g3,
+            .g4,
+            .g5,
+            .g6,
+            .metrics,
+            .timeline,
+            .before-after,
+            .field-list {
+                grid-template-columns: 1fr
+            }
+
+            .card {
+                padding: 21px
+            }
+
+            .lead {
+                margin-bottom: 23px
+            }
+
+            h1 {
+                font-size: 40px
+            }
+
+            .record {
+                padding: 20px
+            }
+
+            .record dl {
+                grid-template-columns: 1fr;
+                gap: 4px
+            }
+
+            .record dd {
+                margin-bottom: 9px
+            }
+
+            .record-head {
+                flex-direction: column;
+                gap: 3px
+            }
+
+            .record-head .badge {
+                align-self: flex-start;
+                margin-bottom: 12px
+            }
+
+            .menu-grid {
+                grid-template-columns: 1fr
+            }
+
+            .nav-right .sources-label {
+                display: none
+            }
+
+            .brand {
+                font-size: 18px
+            }
+
+            .tool {
+                padding: 8px 10px
+            }
+
+            .appbar {
+                gap: 10px
+            }
+
+            .nav-left,
+            .nav-right {
+                gap: 10px
+            }
+
+            .bottom-label {
+                display: none
+            }
+
+            .bottom-bar {
+                justify-content: center
+            }
+
+            .dialog-body {
+                padding: 18px
+            }
+
+            .dialog-head {
+                padding: 18px
+            }
+
+            .count {
+                min-width: 66px
+            }
+        }
+
+        @media(prefers-reduced-motion:reduce) {
+            * {
+                scroll-behavior: auto !important;
+                transition: none !important
+            }
+        }
+
+        @media print {
+            @page {
+                size: A4 landscape;
+                margin: 10mm
+            }
+
+            body {
+                background: #07111f;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact
+            }
+
+            .appbar,
+            .bottom-bar,
+            .progress,
+            dialog {
+                display: none !important
+            }
+
+            .slide {
+                display: block !important;
+                min-height: 0;
+                height: auto;
+                padding: 20px;
+                break-after: page;
+                page-break-after: always;
+                overflow: visible
+            }
+
+            .slide:last-of-type {
+                break-after: auto
+            }
+
+            .inner {
+                margin: 0 auto
+            }
+
+            h1 {
+                font-size: 42px
+            }
+
+            h2 {
+                font-size: 29px
+            }
+
+            .lead {
+                font-size: 14px;
+                margin-bottom: 18px
+            }
+
+            .card {
+                padding: 16px;
+                box-shadow: none
+            }
+
+            .card p,
+            ul,
+            .card.big p {
+                font-size: 13px
+            }
+
+            .case-flow {
+                gap: 30px 45px
+            }
+
+            .case-flow li {
+                padding: 14px;
+                min-height: 105px
+            }
+
+            .case-flow h3 {
+                font-size: 15px
+            }
+
+            .case-flow p {
+                font-size: 11px
+            }
+
+            .case-flow li:nth-child(3)::after,
+            .case-flow li:nth-child(6)::after {
+                bottom: -33px
+            }
+
+            .source-note {
+                font-size: 9px
+            }
+
+            .table th,
+            .table td {
+                font-size: 12px;
+                padding: 9px 12px
+            }
+
+            .record {
+                padding: 16px
+            }
+
+            .record dl {
+                font-size: 12px
+            }
+
+            .phase {
+                padding: 16px
+            }
+
+            .phase p {
+                font-size: 12px
+            }
+
+            .note {
+                font-size: 10px
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="progress" id="progress" aria-hidden="true"></div>
+    <header class="appbar">
+        <div class="nav-left"><button class="tool" id="menuButton" aria-haspopup="dialog" aria-controls="slideMenu">☰
+                <span>Slides</span></button>
+            <div class="brand">VCEMS<span>SOLUTION PRESENTATION</span></div>
+        </div>
+        <div class="nav-right"><span class="nav-section" id="sectionLabel">Cover</span><button
+                class="tool" id="sourcesButton" aria-haspopup="dialog" aria-controls="sourcesDialog"
+                title="Reference material">Sources</button></div>
+    </header>
+    <main id="deck" aria-label="VCEMS presentation">
+
+        <section class="slide cover active" id="cover" data-section="Cover" aria-labelledby="title-1">
+            <div class="inner">
+                <div class="client">Prepared for <b>VCEMS / VACB</b></div>
+                <div class="kicker">Existing platform to enhanced case workflow</div>
+                <h1 id="title-1">VCEMS Enhancement</h1>
+                <p class="subtitle">From the existing FIR platform to a digitized case, document and arrest workflow.
+                    Petition data auto-fills FIR. FIR auto-starts Case Diary. Documents, arrest, search and court
+                    submission stay digital.</p>
+                <div class="grid g2">
+                    <div class="card">
+                        <div class="card-head">
+                            <span class="icon amber" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg></span>
+                            <span class="section-chip" style="margin:0">EXISTING SYSTEM TODAY</span>
+                        </div>
+                        <h3>FIR-centric, paper after registration</h3>
+                        <p>Master, Activities and Reports already support FIR documentation, users and units. After FIR
+                            registration, investigation work, memos, arrests and court submission remain largely
+                            manual.</p>
+                    </div>
+                    <div class="card primary">
+                        <div class="card-head">
+                            <span class="icon green" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg></span>
+                            <span class="section-chip" style="margin:0">WHAT THIS CHANGE ADDS</span>
+                        </div>
+                        <h3>Automatic data flow into a digital case file</h3>
+                        <p>Petition data flows into FIR Information. Completed FIR opens Case Diary. Templates, unique
+                            document numbers, digital arrest, search, signatures and court submission complete the
+                            record.</p>
+                    </div>
+                </div>
+                <p class="source-note">VCEMS / Petition → FIR → Case Diary → court. No duplicate entry of petition data.
+                </p>
+            </div>
+        </section>
+
+        <section class="slide" id="platform" data-section="Existing System" aria-labelledby="title-2">
+            <div class="inner">
+                <div class="kicker">Existing System</div>
+                <h2 id="title-2">Existing System — Platform Overview</h2>
+                <p class="lead">VCEMS is an operational, web-based platform supporting the digital handling of
+                    vigilance-related activities within the Vigilance and Anti-Corruption Bureau (VACB).</p>
+                <div class="metrics">
+                    <div class="card metric">
+                        <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+                        <div class="num">1,000+</div>
+                        <p>Registered users</p>
+                    </div>
+                    <div class="card metric">
+                        <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-8h6v8"/><path d="M8 6h.01M12 6h.01M16 6h.01M8 10h.01M12 10h.01M16 10h.01"/></svg></span>
+                        <div class="num">24</div>
+                        <p>Offices statewide</p>
+                    </div>
+                    <div class="card metric">
+                        <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg></span>
+                        <div class="num">~500</div>
+                        <p>FIRs registered / year</p>
+                    </div>
+                </div>
+                <div class="two-col">
+                    <div class="card">
+                        <div class="card-head">
+                            <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 4v16"/></svg></span>
+                            <h3>Core modules today</h3>
+                        </div>
+                        <ul>
+                            <li>General Diary &amp; FIR Registration</li>
+                            <li>User Management</li>
+                            <li>Unit Management</li>
+                            <li>Integration with stakeholders for structured, secure data handling</li>
+                        </ul>
+                        <p class="note">The existing system is organised around Master, Activities and Reports. FIR
+                            documentation is the core focus.</p>
+                        <div class="chips">
+                            <span class="chip">FIR Info</span>
+                            <span class="chip">Acts</span>
+                            <span class="chip">Occurrence</span>
+                            <span class="chip">Complaints</span>
+                            <span class="chip">FIR Content</span>
+                            <span class="chip">Accused</span>
+                            <span class="chip">Signature</span>
+                            <span class="chip">Upload</span>
+                            <span class="chip">Action</span>
+                        </div>
+                    </div>
+                    <div class="gap-box">
+                        <div class="card-head">
+                            <span class="icon amber" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4M12 17h.01"/></svg></span>
+                            <h3>The Digital Gap</h3>
+                        </div>
+                        <p>Despite this digital infrastructure, the investigation process — from entrustment to
+                            final report — is still handled manually. Documents are prepared and maintained in physical
+                            form, requiring manual compilation, approvals and communication between stakeholders.</p>
+                        <p class="emphasis">This results in delays, added workload, and risk of losing critical case
+                            information.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="slide" id="manual-process" data-section="Existing System" aria-labelledby="title-3">
+            <div class="inner">
+                <div class="kicker">Existing System</div>
+                <h2 id="title-3">Existing System — Manual Investigation Process</h2>
+                <p class="lead">FIR registration is digital. The investigation that follows is still a paper-based chain
+                    of documentation, approvals and physical court submission.</p>
+                <div class="two-col">
+                    <div>
+                        <div class="row-title">Today's paper-based flow</div>
+                        <ol class="process">
+                            <li>
+                                <span class="step-number">1</span>
+                                <div>
+                                    <h3>FIR registered by SHO / authorized officer</h3>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="step-number">2</span>
+                                <div>
+                                    <h3>Case entrusted to an Investigating Officer (IO)</h3>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="step-number">3</span>
+                                <div>
+                                    <h3>Field evidence collection &amp; interrogation</h3>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="step-number">4</span>
+                                <div>
+                                    <h3>Reports, memos &amp; arrests (if any) documented</h3>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="step-number">5</span>
+                                <div>
+                                    <h3>Stage-wise paper approvals to supervisory officers</h3>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="step-number">6</span>
+                                <div>
+                                    <h3>Final Report prepared manually &amp; submitted physically to court</h3>
+                                </div>
+                            </li>
+                        </ol>
+                    </div>
+                    <div>
+                        <div class="row-title kicker danger" style="margin-top:0">Key challenges</div>
+                        <ul class="challenges">
+                            <li>
+                                <span class="dot" aria-hidden="true"></span>
+                                <div>
+                                    <h3>Manual &amp; paper-based</h3>
+                                    <p>Documents are prepared, compiled and approved physically at every stage.</p>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="dot" aria-hidden="true"></span>
+                                <div>
+                                    <h3>No real-time tracking</h3>
+                                    <p>Difficult to monitor case progress or enforce timelines.</p>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="dot" aria-hidden="true"></span>
+                                <div>
+                                    <h3>Fragmented approvals</h3>
+                                    <p>Separate paper sign-offs across officers, units and the Directorate.</p>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="dot" aria-hidden="true"></span>
+                                <div>
+                                    <h3>Risk of data loss</h3>
+                                    <p>Physical records are prone to misplacement or damage.</p>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="dot" aria-hidden="true"></span>
+                                <div>
+                                    <h3>Slower decision-making</h3>
+                                    <p>Increased administrative workload and turnaround time.</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="slide" id="how-it-changes" data-section="How the System Changes" aria-labelledby="title-4">
+            <div class="inner">
+                <div class="kicker">How the existing system changes</div>
+                <h2 id="title-4">How the existing system changes</h2>
+                <p class="lead">Petition data fills FIR Information automatically. Completed FIR opens the first Case
+                    Diary entries. Duplicate entry is eliminated. Officers review; they do not retype petition data.</p>
+                <div class="flow tight">
+                    <div class="node">
+                        <span class="icon green" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M8 13h8M8 17h6"/></svg></span>
+                        <span class="mini-num">01</span>
+                        <b>Petition finalized</b>
+                        <p>Structured petition record is the source. No second capture of the same facts.</p>
+                    </div>
+                    <div class="arrow" aria-hidden="true">→</div>
+                    <div class="node">
+                        <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></span>
+                        <span class="mini-num">02</span>
+                        <b>FIR Information</b>
+                        <p>Auto-filled from the Petition Module. Officers review and continue the FIR process here.</p>
+                    </div>
+                    <div class="arrow" aria-hidden="true">→</div>
+                    <div class="node">
+                        <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></span>
+                        <span class="mini-num">03</span>
+                        <b>FIR Module complete</b>
+                        <p>FIR-related data flows into the FIR Module. This becomes the foundation for case work.</p>
+                    </div>
+                    <div class="arrow" aria-hidden="true">→</div>
+                    <div class="node">
+                        <span class="icon orange" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span>
+                        <span class="mini-num">04</span>
+                        <b>Case Diary starts</b>
+                        <p>The first Case Diary section is created automatically. It is the single record for the case.</p>
+                    </div>
+                    <div class="arrow" aria-hidden="true">→</div>
+                    <div class="node">
+                        <span class="icon amber" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18"/><path d="M5 8h14M5 12h14M5 16h10"/></svg></span>
+                        <span class="mini-num">05</span>
+                        <b>Templates, arrest, court</b>
+                        <p>Standard documents, digital arrest, search, signatures and court submission stay on the
+                            same file.</p>
+                    </div>
+                </div>
+                <div class="before-after">
+                    <div class="callout warn"><strong>Before:</strong> paper after FIR — memos, arrests, approvals and
+                        final report compiled physically.</div>
+                    <div class="callout"><strong>After:</strong> digitized Case Diary as the single record for every
+                        document and activity through to court.</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="slide" id="petition-to-fir" data-section="Petition to FIR" aria-labelledby="title-5">
+            <div class="inner">
+                <div class="kicker">New feature</div>
+                <h2 id="title-5">Petition to FIR workflow</h2>
+                <p class="lead">After petition finalization, all relevant petition data flows automatically into the FIR
+                    Information section. Officers review the information and proceed with the FIR process from this
+                    section.</p>
+                <div class="flow spaced">
+                    <div class="node">
+                        <span class="icon green" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></span>
+                        <span class="mini-num">01</span>
+                        <b>Petition Module</b>
+                        <p>The data displayed in FIR Information is sourced directly from the Petition Module.</p>
+                    </div>
+                    <div class="arrow" aria-hidden="true">→</div>
+                    <div class="node">
+                        <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></span>
+                        <span class="mini-num">02</span>
+                        <b>FIR Information — review</b>
+                        <p>No manual data editing is required in the FIR Information section. Officers review, then
+                            continue the FIR process.</p>
+                    </div>
+                    <div class="arrow" aria-hidden="true">→</div>
+                    <div class="node">
+                        <span class="icon orange" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8h10M7 12h10M7 16h6"/></svg></span>
+                        <span class="mini-num">03</span>
+                        <b>FIR Module</b>
+                        <p>Once the FIR process is completed, all FIR-related data flows automatically into the FIR
+                            Module.</p>
+                    </div>
+                </div>
+                <div class="grid g2 spaced">
+                    <div class="card">
+                        <div class="card-head">
+                            <span class="icon green" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.5 0 10-4.5 10-10S17.5 2 12 2 2 6.5 2 12s4.5 10 10 10z"/><path d="m8 12 3 3 5-6"/></svg></span>
+                            <h3>No re-entry</h3>
+                        </div>
+                        <p>Petition facts are not typed again into FIR Information. The same structured fields carry
+                            forward.</p>
+                    </div>
+                    <div class="card primary">
+                        <div class="card-head">
+                            <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg></span>
+                            <h3>Officer remains in control</h3>
+                        </div>
+                        <p>Officers review the auto-filled FIR Information and proceed with FIR Info, Acts, Occurrence,
+                            Complaints, Content, Accused, Signature, Upload and Action.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="slide" id="fir-vcems" data-section="FIR &amp; VCEMS" aria-labelledby="title-6">
+            <div class="inner">
+                <div class="kicker">New feature</div>
+                <h2 id="title-6">FIR &amp; VCEMS integration</h2>
+                <p class="lead">The VCEMS section will be integrated with the FIR Module. Once the FIR section is
+                    completed, the first section of the Case Diary will be automatically created.</p>
+                <div class="grid g2">
+                    <div class="card primary">
+                        <div class="card-head">
+                            <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></span>
+                            <h3>FIR Module connected to VCEMS</h3>
+                        </div>
+                        <p>FIR-related information serves as the foundation for subsequent case-processing activities.
+                            Case Diary, documents, templates and arrest work all start from this completed FIR record.
+                        </p>
+                    </div>
+                    <div class="card">
+                        <div class="card-head">
+                            <span class="icon orange" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M8 7h8M8 11h8"/></svg></span>
+                            <h3>First Case Diary section auto-created</h3>
+                        </div>
+                        <p>Completing FIR does not require a separate diary opening step. The first Case Diary
+                            entries are created so investigation work continues on the same digital file.</p>
+                    </div>
+                </div>
+                <div class="grid g2 spaced">
+                    <div class="card">
+                        <div class="card-head">
+                            <span class="icon green" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/><path d="M12 13h6"/></svg></span>
+                            <h3>Less duplicate data entry</h3>
+                        </div>
+                        <p>The integrated workflow reduces duplicate data entry. FIR facts are not recaptured when Case
+                            Diary work begins.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-head">
+                            <span class="icon amber" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
+                            <h3>Consistency across modules</h3>
+                        </div>
+                        <p>Petition, FIR and VCEMS share one data trail. Later documents, arrest records and court files
+                            stay aligned with the original FIR.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="slide" id="case-diary" data-section="Case Diary" aria-labelledby="title-7">
+            <div class="inner">
+                <div class="kicker">New feature</div>
+                <h2 id="title-7">Case Diary, documents &amp; informational reports</h2>
+                <p class="lead">Case Diary maintains all documents and information related to the particular case. The
+                    Informational Report is the initial stage of digitization and is linked to that case.</p>
+                <div class="grid g3">
+                    <div class="card">
+                        <div class="card-head">
+                            <span class="icon orange" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span>
+                            <h3>Case Diary</h3>
+                        </div>
+                        <p>The single record for every document and activity on the case. Auto-initiated when FIR is
+                            completed. Subsequent investigation work is recorded here, not on a parallel paper file.
+                        </p>
+                    </div>
+                    <div class="card primary">
+                        <div class="card-head">
+                            <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h16M4 15h16M10 3 8 21M16 3l-2 18"/></svg></span>
+                            <h3>Document identity</h3>
+                        </div>
+                        <p>Each document has a unique Document ID / Number. Every document and relevant item associated
+                            with the case is assigned a unique number for identification and tracking.</p>
+                        <ul>
+                            <li>Document ID / Number</li>
+                            <li>Number of pages</li>
+                            <li>Date</li>
+                            <li>Case-related document details</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <div class="card-head">
+                            <span class="icon green" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span>
+                            <h3>Informational Report</h3>
+                        </div>
+                        <p>The initial stage of the digitization process. Report information is converted into a structured
+                            digital format, linked with the respective case, and becomes a centralized, searchable
+                            digital record for case processing.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="slide dense" id="templates-arrest" data-section="Templates &amp; Arrest" aria-labelledby="title-8">
+            <div class="inner">
+                <div class="kicker">New feature — detailed workflow</div>
+                <h2 id="title-8">Standardized templates &amp; digital arrest</h2>
+                <p class="lead">Authorized templates keep case documents consistent. Arrest memo and arrest information
+                    are completed digitally and linked to the Case Diary.</p>
+
+                <div class="row-title">Authorized templates — officers select, they do not draft from scratch</div>
+                <div class="grid g6">
+                    <div class="card mini-card">
+                        <span class="icon orange" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M5 12V5a2 2 0 0 1 2-2h7l5 5v4"/><path d="M5 21h6M5 17h10"/><path d="m15 19 2 2 4-4"/></svg></span>
+                        <h3>Warrant</h3>
+                        <p>Warrant template</p>
+                    </div>
+                    <div class="card mini-card">
+                        <span class="icon orange" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg></span>
+                        <h3>Mahazar</h3>
+                        <p>Mahazar template</p>
+                    </div>
+                    <div class="card mini-card">
+                        <span class="icon orange" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></span>
+                        <h3>Case property</h3>
+                        <p>Exhibit template</p>
+                    </div>
+                    <div class="card mini-card">
+                        <span class="icon orange" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="M11 8v6M8 11h6"/></svg></span>
+                        <h3>Inspection memo</h3>
+                        <p>Inspection memo</p>
+                    </div>
+                    <div class="card mini-card">
+                        <span class="icon orange" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
+                        <h3>Arrest request</h3>
+                        <p>Arrest request</p>
+                    </div>
+                    <div class="card mini-card">
+                        <span class="icon orange" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></span>
+                        <h3>Other documents</h3>
+                        <p>Other case templates</p>
+                    </div>
+                </div>
+
+                <div class="row-title">Digital arrest memo — four steps</div>
+                <div class="grid g4 steps-row">
+                    <div class="card">
+                        <span class="mini-num">01</span>
+                        <h3>Select Case Diary</h3>
+                        <p>Officers select the relevant Case Diary for the arrest.</p>
+                    </div>
+                    <div class="card">
+                        <span class="mini-num">02</span>
+                        <h3>Select warrant</h3>
+                        <p>The required warrant is selected from the case.</p>
+                    </div>
+                    <div class="card">
+                        <span class="mini-num">03</span>
+                        <h3>Complete memo digitally</h3>
+                        <p>The Arrest Memo form is completed and submitted digitally.</p>
+                    </div>
+                    <div class="card">
+                        <span class="mini-num">04</span>
+                        <h3>Officer verification</h3>
+                        <p>The concerned officer verifies the submitted information.</p>
+                    </div>
+                </div>
+
+                <div class="row-title">Arrest Information Module</div>
+                <div class="grid g5">
+                    <div class="card mini-card">
+                        <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8 12 3 7 8"/><path d="M12 3v12"/></svg></span>
+                        <h3>Scan &amp; upload</h3>
+                        <p>Documents scanned and uploaded digitally.</p>
+                    </div>
+                    <div class="card mini-card">
+                        <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h16M4 15h16M10 3 8 21M16 3l-2 18"/></svg></span>
+                        <h3>Unique number</h3>
+                        <p>Auto-assigned to each uploaded document.</p>
+                    </div>
+                    <div class="card mini-card">
+                        <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></span>
+                        <h3>Linked to case</h3>
+                        <p>All arrest documents linked to the case.</p>
+                    </div>
+                    <div class="card mini-card">
+                        <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span>
+                        <h3>Medical report</h3>
+                        <p>Medical Report upload is provided.</p>
+                    </div>
+                    <div class="card mini-card">
+                        <span class="icon green" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></span>
+                        <h3>Central record</h3>
+                        <p>One digital file of arrest information.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="slide" id="search-download" data-section="Search &amp; Download" aria-labelledby="title-9">
+            <div class="inner">
+                <div class="kicker">New feature</div>
+                <h2 id="title-9">Case file search &amp; download</h2>
+                <p class="lead">Easy access to all case-related documents through a centralized interface. Filter-based
+                    search locates specific case files. Download options cover a single file or a complete set.</p>
+                <div class="grid g3">
+                    <div class="card">
+                        <div class="card-head">
+                            <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg></span>
+                            <h3>Filter-based search</h3>
+                        </div>
+                        <p>Locate specific case files using filters instead of browsing physical bundles.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-head">
+                            <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="M11 8v6M8 11h6"/></svg></span>
+                            <h3>Multiple search criteria</h3>
+                        </div>
+                        <p>Multiple search options for faster document retrieval across the case file.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-head">
+                            <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10 12 15 17 10"/><path d="M12 15V3"/></svg></span>
+                            <h3>Single file download</h3>
+                        </div>
+                        <p>Download one selected document when only that item is required.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-head">
+                            <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8 17 12 21 16 17"/><path d="M12 12v9"/><path d="M20.88 18.09A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.29"/></svg></span>
+                            <h3>Bulk download</h3>
+                        </div>
+                        <p>Download multiple files simultaneously, including complete case files.</p>
+                    </div>
+                    <div class="card primary">
+                        <div class="card-head">
+                            <span class="icon green" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></span>
+                            <h3>Centralized access</h3>
+                        </div>
+                        <p>All case-related documents are available from one interface, with unique numbering for
+                            traceability.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-head">
+                            <span class="icon amber" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M8 13h2M8 17h8"/></svg></span>
+                            <h3>Complete case file</h3>
+                        </div>
+                        <p>Provide download options for complete case files when the full digital record is required.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="slide" id="digitization" data-section="Digitization &amp; Court" aria-labelledby="title-10">
+            <div class="inner">
+                <div class="kicker">New feature</div>
+                <h2 id="title-10">Complete system digitization &amp; modernization</h2>
+                <p class="lead">Digitization and modernization of the complete case management workflow. Reduce
+                    dependency on physical documentation. Digitally manage case-related documents and records.</p>
+                <div class="grid g3">
+                    <div class="card">
+                        <div class="card-head">
+                            <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></span>
+                            <h3>Digital signatures</h3>
+                        </div>
+                        <p>Implement digital signature capabilities so approvals and records can be signed without a
+                            paper trail.</p>
+                    </div>
+                    <div class="card primary">
+                        <div class="card-head">
+                            <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22 11 13 2 9z"/></svg></span>
+                            <h3>Digital submission to court</h3>
+                        </div>
+                        <p>Enable digital submission to court so the Final Report and supporting records need not move
+                            only as physical files.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-head">
+                            <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M8 13h8M8 17h8"/></svg></span>
+                            <h3>Digital case records</h3>
+                        </div>
+                        <p>Case-related documents and records are managed digitally from complaint through disposal.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-head">
+                            <span class="icon green" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></span>
+                            <h3>Transparency &amp; traceability</h3>
+                        </div>
+                        <p>Improve transparency, traceability and accessibility of the case file for officers and
+                            supervisory review.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-head">
+                            <span class="icon amber" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 11c1.66 0 3-1.2 3-2.67C15 5.6 12 3 12 3S9 5.6 9 8.33C9 9.8 10.34 11 12 11z"/><path d="M12 11v10"/><path d="M8 21h8"/><path d="M7 15c-1.5.5-3 2-3 4"/><path d="M17 15c1.5.5 3 2 3 4"/></svg></span>
+                            <h3>Aadhaar verification</h3>
+                        </div>
+                        <p>Aadhaar verification capability can be incorporated, subject to feasibility and required
+                            authorization / integration.</p>
+                    </div>
+                    <div class="callout warn">
+                        <strong>Note on Aadhaar:</strong> this is not a committed go-live feature. It is included only
+                        where feasibility, authorization and integration are confirmed.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="slide" id="checklist-progress" data-section="Checklist &amp; Progress" aria-labelledby="title-11">
+            <div class="inner">
+                <div class="kicker">New feature</div>
+                <h2 id="title-11">Activity-based checklist &amp; progress monitoring</h2>
+                <p class="lead">Each major activity contains a predefined set of sub-activities. Checklist completion
+                    is used to monitor activity progress and to generate management-level reports.</p>
+                <div class="two-col">
+                    <div class="card">
+                        <div class="card-head">
+                            <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span>
+                            <h3>Checklist for every activity</h3>
+                        </div>
+                        <p>A dedicated checklist is created for every activity. Officers can clearly identify the
+                            activities that must be completed before closing an activity.</p>
+                        <ul>
+                            <li>Each major activity has a predefined set of sub-activities.</li>
+                            <li>Each activity has a predefined checklist.</li>
+                            <li>Checklist-based processing ensures required steps are not missed.</li>
+                        </ul>
+                    </div>
+                    <div class="card primary">
+                        <div class="card-head">
+                            <span class="icon amber" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12 18 12 15 21 9 3 6 12 2 12"/></svg></span>
+                            <h3>What officers and management can track</h3>
+                        </div>
+                        <ul class="track-list">
+                            <li>Activity status</li>
+                            <li>Sub-activity completion</li>
+                            <li>Pending activities</li>
+                            <li>Completed activities</li>
+                            <li>Overall case progress</li>
+                        </ul>
+                        <p class="note">Reports are generated from activity and checklist completion. This supports
+                            monitoring, review and management-level reporting, with better visibility into each case.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="slide" id="benefits" data-section="Overall Benefits" aria-labelledby="title-12">
+            <div class="inner">
+                <div class="kicker">Outcome</div>
+                <h2 id="title-12">Overall benefits</h2>
+                <p class="lead">What the integrated Petition → FIR → VCEMS workflow delivers end to end.</p>
+                <div class="pills">
+                    <span class="pill">Automatic data flow: Petition → FIR → VCEMS</span>
+                    <span class="pill">No duplicate data entry</span>
+                    <span class="pill">Standardized case documentation</span>
+                    <span class="pill">Unique document numbering &amp; traceability</span>
+                    <span class="pill">Digital arrest &amp; case diary processing</span>
+                    <span class="pill">Advanced search + single / bulk download</span>
+                    <span class="pill">Digital signatures &amp; digital court submission</span>
+                    <span class="pill">Checklist-based activity monitoring</span>
+                    <span class="pill">Improved transparency &amp; reporting</span>
+                    <span class="pill">Complete digitization &amp; modernization</span>
+                </div>
+                <div class="grid g3 spaced">
+                    <div class="card">
+                        <div class="card-head">
+                            <span class="icon green" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg></span>
+                            <h3>One data trail</h3>
+                        </div>
+                        <p>Petition facts fill FIR. FIR opens Case Diary. Later documents stay on the same numbered
+                            file.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-head">
+                            <span class="icon orange" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span>
+                            <h3>Standard work</h3>
+                        </div>
+                        <p>Authorized templates, unique IDs and checklists keep documentation consistent across units.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-head">
+                            <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
+                            <h3>Supervisory visibility</h3>
+                        </div>
+                        <p>Activity status, pending work and management reports come from checklist completion, not
+                            paper follow-up.</p>
+                    </div>
+                </div>
+                <p class="source-note">Fully digitized record from initial complaint to final disposal / digital court
+                    submission.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bottom-bar"><span class="bottom-label">VCEMS / Case Workflow Enhancement</span>
+        <nav class="controls" aria-label="Presentation navigation"><button class="tool" id="prevButton"
+                aria-label="Previous slide" title="Previous slide (Left arrow)">←</button><span class="count"
+                id="count">01 / 09</span><button class="tool" id="nextButton" aria-label="Next slide"
+                title="Next slide (Right arrow)">→</button><button class="tool" id="fullscreenButton"
+                aria-label="Enter fullscreen" title="Toggle fullscreen (F)">⛶</button></nav>
+    </footer>
+    <div class="sr-only" id="announcement" aria-live="polite" aria-atomic="true"></div>
+
+    <dialog id="slideMenu" aria-labelledby="menuTitle">
+        <div class="dialog-head">
+            <h2 id="menuTitle">Slides</h2><button class="tool" data-close aria-label="Close slide menu">Close ×</button>
+        </div>
+        <div class="dialog-body">
+            <p class="small" style="margin-bottom:16px">Arrow keys to navigate. Home / End to jump. F for fullscreen.
+            </p>
+            <nav class="menu-grid" id="menuItems" aria-label="Choose a slide"></nav>
+        </div>
+    </dialog>
+    <dialog id="sourcesDialog" aria-labelledby="sourcesTitle">
+        <div class="dialog-head">
+            <h2 id="sourcesTitle">Reference material</h2><button class="tool" data-close
+                aria-label="Close references">Close ×</button>
+        </div>
+        <div class="dialog-body">
+            <h3>Design reference</h3>
+            <p><cite>slide-starterkit.html</cite>: dark blue and cyan theme, slide navigation, cards, process diagrams
+                and Lucide-style icons.</p>
+            <h3>Existing system</h3>
+            <p>VCEMS is an operational web platform for VACB. Scale used in this deck: 1,000+ registered users, 24
+                offices, ~500 FIRs per year. Core modules today: General Diary / FIR Registration, User Management, Unit
+                Management, and stakeholder integration. FIR Activities include FIR Info, Acts, Occurrence,
+                Complaints, FIR Content, Accused, Signature, Upload and Action. Investigation after FIR remains
+                paper-based.</p>
+            <h3>Proposed change</h3>
+            <p>Petition data auto-fills FIR Information with no re-entry. Completed FIR auto-creates the first Case
+                Diary section. Case Diary holds uniquely numbered documents. Informational reports are digitized.
+                Authorized templates, digital arrest memo, arrest information (including medical reports), search,
+                single/bulk download, digital signatures and digital court submission follow. Checklist completion
+                drives progress monitoring and management reports. Aadhaar verification is subject to feasibility and
+                authorization.</p>
+            <h3>Presentation scope</h3>
+            <p>This HTML describes proposed VCEMS enhancement capabilities. It does not connect to live VCEMS
+                services.</p>
+        </div>
+    </dialog>
+
+    <script>
+        (() => {
+            'use strict';
+            const slides = Array.from(document.querySelectorAll('.slide'));
+            const menu = document.getElementById('slideMenu');
+            const sources = document.getElementById('sourcesDialog');
+            const menuButton = document.getElementById('menuButton');
+            const sourcesButton = document.getElementById('sourcesButton');
+            const prevButton = document.getElementById('prevButton');
+            const nextButton = document.getElementById('nextButton');
+            const fsButton = document.getElementById('fullscreenButton');
+            let index = 0;
+            const menuItems = slides.map((slide, i) => {
+                const button = document.createElement('button');
+                button.className = 'tool menu-item';
+                const number = document.createElement('span');
+                number.textContent = String(i + 1).padStart(2, '0');
+                button.append(number, document.createTextNode(slide.querySelector('h1,h2').textContent));
+                button.addEventListener('click', () => { menu.close(); go(i); });
+                document.getElementById('menuItems').appendChild(button);
+                return button;
+            });
+            function go(value, updateHash = true) {
+                index = Math.max(0, Math.min(slides.length - 1, value));
+                slides.forEach((slide, i) => {
+                    const active = i === index;
+                    slide.classList.toggle('active', active);
+                    slide.setAttribute('aria-hidden', String(!active));
+                    menuItems[i].setAttribute('aria-current', String(active));
+                });
+                document.getElementById('progress').style.width = ((index + 1) / slides.length * 100) + '%';
+                document.getElementById('count').textContent = String(index + 1).padStart(2, '0') + ' / ' + String(slides.length).padStart(2, '0');
+                document.getElementById('sectionLabel').textContent = slides[index].dataset.section;
+                document.getElementById('announcement').textContent = 'Slide ' + (index + 1) + ' of ' + slides.length + ': ' + slides[index].querySelector('h1,h2').textContent;
+                prevButton.disabled = index === 0;
+                nextButton.disabled = index === slides.length - 1;
+                if (updateHash && location.hash !== '#' + slides[index].id) history.replaceState(null, '', '#' + slides[index].id);
+                window.scrollTo({ top: 0, behavior: 'instant' });
+            }
+            function navigateHash() {
+                const target = slides.findIndex(slide => '#' + slide.id === location.hash);
+                go(target < 0 ? 0 : target, false);
+            }
+            async function toggleFullscreen() {
+                try {
+                    if (document.fullscreenElement) await document.exitFullscreen();
+                    else if (document.documentElement.requestFullscreen) await document.documentElement.requestFullscreen();
+                } catch (_) {
+                    document.getElementById('announcement').textContent = 'Fullscreen is unavailable in this viewer. Open the file in a browser to use fullscreen.';
+                }
+            }
+            menuButton.addEventListener('click', () => menu.showModal());
+            sourcesButton.addEventListener('click', () => sources.showModal());
+            document.querySelectorAll('[data-close]').forEach(button => button.addEventListener('click', () => button.closest('dialog').close()));
+            [menu, sources].forEach(dialog => dialog.addEventListener('click', event => {
+                if (event.target !== dialog) return;
+                const rect = dialog.getBoundingClientRect();
+                if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) dialog.close();
+            }));
+            prevButton.addEventListener('click', () => go(index - 1));
+            nextButton.addEventListener('click', () => go(index + 1));
+            fsButton.addEventListener('click', toggleFullscreen);
+            if (!document.documentElement.requestFullscreen) fsButton.hidden = true;
+            document.addEventListener('fullscreenchange', () => {
+                fsButton.setAttribute('aria-label', document.fullscreenElement ? 'Exit fullscreen' : 'Enter fullscreen');
+            });
+            document.addEventListener('keydown', event => {
+                if (menu.open || sources.open || event.altKey || event.ctrlKey || event.metaKey) return;
+                if (event.target.closest('input,textarea,select,[contenteditable]')) return;
+                if (event.key === ' ' && event.target.closest('button,a,summary')) return;
+                if (['ArrowRight', 'PageDown', ' '].includes(event.key)) { event.preventDefault(); go(index + 1); }
+                else if (['ArrowLeft', 'PageUp'].includes(event.key)) { event.preventDefault(); go(index - 1); }
+                else if (event.key === 'Home') { event.preventDefault(); go(0); }
+                else if (event.key === 'End') { event.preventDefault(); go(slides.length - 1); }
+                else if (event.key.toLowerCase() === 'f') toggleFullscreen();
+            });
+            let touch = null;
+            document.addEventListener('touchstart', event => {
+                if (menu.open || sources.open || event.touches.length !== 1 || event.target.closest('button,a,dialog,.table-wrap')) { touch = null; return; }
+                touch = { x: event.touches[0].clientX, y: event.touches[0].clientY };
+            }, { passive: true });
+            document.addEventListener('touchend', event => {
+                if (!touch || !event.changedTouches.length) return;
+                const dx = event.changedTouches[0].clientX - touch.x;
+                const dy = event.changedTouches[0].clientY - touch.y;
+                if (Math.abs(dx) > 75 && Math.abs(dx) > Math.abs(dy) * 1.6) go(index + (dx < 0 ? 1 : -1));
+                touch = null;
+            }, { passive: true });
+            document.addEventListener('touchcancel', () => touch = null, { passive: true });
+            window.addEventListener('hashchange', navigateHash);
+            navigateHash();
+        })();
+    </script>
+</body>
+
+</html>
