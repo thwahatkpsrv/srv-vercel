@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sheetal AC — AI Voice &amp; WhatsApp Assistant Platform</title>
+  <meta name="description" content="Client Technical & Operational Overview for Sheetal AC AI Voice Agent & SRV Social WhatsApp Assistant">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0284c7;
+      --primary-dark: #0369a1;
+      --primary-light: #e0f2fe;
+      --secondary: #0f172a;
+      --accent: #10b981;
+      --accent-light: #ecfdf5;
+      --warning: #f59e0b;
+      --warning-light: #fffbeb;
+      --danger: #ef4444;
+      --danger-light: #fef2f2;
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --surface-subtle: #f1f5f9;
+      --border: #e2e8f0;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+      --shadow-md: 0 4px 14px rgba(0,0,0,0.06);
+      --shadow-lg: 0 10px 25px -5px rgba(0,0,0,0.08);
+      --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Navbar */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      font-size: 1.18rem;
+      color: var(--secondary);
+    }
+    .brand-badge {
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      font-size: 0.75rem;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+    }
+    .nav-links {
+      display: flex;
+      gap: 22px;
+    }
+    .nav-link {
+      text-decoration: none;
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+    .nav-link:hover { color: var(--primary); }
+
+    /* Hero Banner */
+    .hero {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 45%, #0284c7 100%);
+      color: white;
+      padding: 68px 24px 58px;
+      text-align: center;
+      position: relative;
+    }
+    .hero-title {
+      font-size: clamp(2rem, 4.5vw, 3.2rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 14px;
+      line-height: 1.2;
+    }
+    .hero-subtitle {
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      opacity: 0.92;
+      max-width: 820px;
+      margin: 0 auto 24px;
+      font-weight: 400;
+      line-height: 1.55;
+    }
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+    .hero-tag {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.84rem;
+      font-weight: 500;
+    }
+
+    /* Container */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 50px 24px;
+    }
+
+    /* Section Headings */
+    .section-title {
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 800;
+      color: var(--secondary);
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+    .section-desc {
+      text-align: center;
+      color: var(--text-muted);
+      max-width: 740px;
+      margin: 0 auto 38px;
+      font-size: 1.02rem;
+    }
+
+    /* KPI Cards */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 18px;
+      margin-bottom: 45px;
+    }
+    .kpi-card {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      position: relative;
+      overflow: hidden;
+      border-top: 4px solid var(--primary);
+    }
+    .kpi-card.green { border-top-color: var(--accent); }
+    .kpi-card.amber { border-top-color: var(--warning); }
+    .kpi-card.purple { border-top-color: #8b5cf6; }
+
+    .kpi-icon { font-size: 1.7rem; margin-bottom: 10px; }
+    .kpi-val {
+      font-size: 2.1rem;
+      font-weight: 800;
+      color: var(--secondary);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .kpi-label { font-size: 0.94rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .kpi-sub { font-size: 0.82rem; color: var(--text-muted); }
+
+    /* Comparison Box */
+    .split-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 22px;
+      margin-bottom: 50px;
+    }
+    .split-box {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+    }
+    .split-box.left { border-top: 4px solid var(--danger); }
+    .split-box.right { border-top: 4px solid var(--accent); }
+    .split-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .split-item {
+      padding: 12px 16px;
+      border-radius: var(--radius-sm);
+      margin-bottom: 10px;
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+    .split-item.danger { background: var(--danger-light); border-left: 3px solid var(--danger); color: #991b1b; }
+    .split-item.success { background: var(--accent-light); border-left: 3px solid var(--accent); color: #065f46; }
+
+    /* Architecture Tabs (Client Format) */
+    .arch-wrapper {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+      margin-bottom: 55px;
+    }
+    .arch-tabs {
+      display: flex;
+      background: var(--surface-subtle);
+      border-bottom: 1px solid var(--border);
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .arch-tab-btn {
+      padding: 16px 24px;
+      background: transparent;
+      border: none;
+      border-bottom: 3px solid transparent;
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+    .arch-tab-btn:hover { color: var(--primary); }
+    .arch-tab-btn.active {
+      color: var(--primary);
+      background: var(--surface);
+      border-bottom-color: var(--primary);
+    }
+    .arch-content {
+      padding: 32px 28px;
+    }
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; animation: fadeIn 0.25s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Steps Flow Cards */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin: 24px 0 10px;
+    }
+    .step-card {
+      background: var(--surface-subtle);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 20px 18px;
+      position: relative;
+    }
+    .step-badge {
+      display: inline-block;
+      background: var(--primary);
+      color: white;
+      font-size: 0.74rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+    .step-card.green .step-badge { background: var(--accent); }
+    .step-card.purple .step-badge { background: #8b5cf6; }
+    .step-card.amber .step-badge { background: var(--warning); }
+
+    .step-title { font-size: 1rem; font-weight: 700; color: var(--secondary); margin-bottom: 6px; }
+    .step-desc { font-size: 0.88rem; color: var(--text-muted); line-height: 1.5; }
+
+    .info-callout {
+      background: var(--primary-light);
+      border-left: 4px solid var(--primary);
+      padding: 16px 20px;
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      margin-top: 24px;
+      font-size: 0.92rem;
+      color: #0369a1;
+      line-height: 1.55;
+    }
+
+    /* Live Scenario Simulator */
+    .sim-card {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+      margin-bottom: 55px;
+    }
+    .sim-header {
+      background: var(--surface-subtle);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 22px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .sim-title { font-weight: 700; font-size: 1.05rem; display: flex; align-items: center; gap: 8px; }
+    .sim-selectors { display: flex; gap: 8px; flex-wrap: wrap; }
+    .sim-btn {
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .sim-btn.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+    .sim-body {
+      display: grid;
+      grid-template-columns: 1fr 1.15fr;
+      min-height: 420px;
+    }
+    @media (max-width: 900px) {
+      .sim-body { grid-template-columns: 1fr; }
+    }
+    .chat-column {
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      background: #fafafa;
+      border-right: 1px solid var(--border);
+      max-height: 520px;
+      overflow-y: auto;
+    }
+    .chat-bubble {
+      max-width: 86%;
+      padding: 12px 16px;
+      border-radius: var(--radius-md);
+      font-size: 0.92rem;
+      line-height: 1.45;
+    }
+    .chat-bubble.assistant {
+      align-self: flex-start;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-bottom-left-radius: 2px;
+    }
+    .chat-bubble.user {
+      align-self: flex-end;
+      background: var(--primary);
+      color: white;
+      border-bottom-right-radius: 2px;
+    }
+    .chat-bubble .speaker {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+      opacity: 0.8;
+    }
+
+    /* Client-Friendly CRM Action Card */
+    .crm-column {
+      padding: 22px;
+      background: #ffffff;
+      display: flex;
+      flex-direction: column;
+    }
+    .crm-header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 16px;
+    }
+    .crm-header-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .crm-badge-live {
+      background: var(--accent-light);
+      color: var(--accent);
+      font-size: 0.74rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .live-dot {
+      width: 6px; height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+    }
+
+    /* Visual Ticket Preview */
+    .ticket-card {
+      background: var(--surface-subtle);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      padding: 20px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .ticket-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+    }
+    .ticket-type {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--secondary);
+    }
+    .ticket-id {
+      font-size: 0.82rem;
+      font-weight: 700;
+      background: #ffffff;
+      padding: 2px 8px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+    }
+    .ticket-row {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      font-size: 0.88rem;
+      gap: 8px;
+    }
+    .ticket-label {
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+    .ticket-value {
+      font-weight: 500;
+      color: var(--secondary);
+    }
+    .status-pill {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 999px;
+    }
+    .status-pill.success { background: #dcfce7; color: #15803d; }
+    .status-pill.primary { background: #e0f2fe; color: #0369a1; }
+    .status-pill.amber { background: #fef3c7; color: #b45309; }
+
+    .ticket-footer-note {
+      margin-top: auto;
+      background: #ffffff;
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      font-size: 0.82rem;
+      color: #0369a1;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Client-Friendly Simple Roadmap (Grid / Milestone Cards) */
+    .roadmap-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 16px;
+      margin-bottom: 50px;
+    }
+    .roadmap-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 20px 18px;
+      box-shadow: var(--shadow-sm);
+      position: relative;
+      border-top: 4px solid var(--primary);
+    }
+    .roadmap-num {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+    }
+    .roadmap-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--secondary);
+      margin-bottom: 6px;
+    }
+    .roadmap-time {
+      display: inline-block;
+      background: var(--surface-subtle);
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-bottom: 12px;
+    }
+    .roadmap-items {
+      list-style: none;
+      font-size: 0.86rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .roadmap-items li {
+      margin-bottom: 6px;
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+    }
+    .roadmap-items li::before {
+      content: "✓";
+      color: var(--accent);
+      font-weight: bold;
+    }
+
+    /* Guardrails Grid */
+    .guardrails-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 18px;
+      margin-bottom: 50px;
+    }
+    .guardrail-card {
+      background: var(--surface);
+      border-radius: var(--radius-md);
+      padding: 22px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      border-left: 4px solid var(--primary);
+    }
+    .guardrail-card.amber { border-left-color: var(--warning); }
+    .guardrail-card.green { border-left-color: var(--accent); }
+    .guardrail-card.red { border-left-color: var(--danger); }
+    .guardrail-title { font-weight: 700; font-size: 1.02rem; margin-bottom: 6px; }
+    .guardrail-desc { font-size: 0.88rem; color: var(--text-muted); line-height: 1.5; }
+
+    /* Footer */
+    footer {
+      background: #0f172a;
+      color: #94a3b8;
+      padding: 38px 24px;
+      text-align: center;
+      border-top: 1px solid #1e293b;
+      font-size: 0.88rem;
+    }
+    footer a { color: #38bdf8; text-decoration: none; }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <nav class="navbar">
+    <div class="nav-brand">
+      <span>❄️ Sheetal AC</span>
+      <span class="brand-badge">Voice &amp; WhatsApp AI</span>
+    </div>
+    <div class="nav-links">
+      <a href="#kpis" class="nav-link">Overview</a>
+      <a href="#howitworks" class="nav-link">How It Works</a>
+      <a href="#simulator" class="nav-link">Live Experience</a>
+      <a href="#srv-whatsapp" class="nav-link">SRV Social WhatsApp</a>
+      <a href="#roadmap" class="nav-link">Timeline</a>
+    </div>
+  </nav>
+
+  <!-- Hero Banner -->
+  <header class="hero">
+    <h1 class="hero-title">❄️ Sheetal AC Conversational AI Platform</h1>
+    <p class="hero-subtitle">
+      Automating Inbound Phone Calls, Missed-Call Follow-ups, and SRV Social WhatsApp Chats with Real-Time Sheetal CRM Synchronization.
+    </p>
+    <div class="hero-tags">
+      <span class="hero-tag">📞 1st Ring Live Answer</span>
+      <span class="hero-tag">🗣️ Spoken Malayalam &amp; English</span>
+      <span class="hero-tag">🔧 Direct Technician Booking</span>
+      <span class="hero-tag">📱 Sheetal SRV Social WhatsApp Linked</span>
+      <span class="hero-tag">🔄 Zero Manual Data Entry</span>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- Section 1: Overview & Value -->
+    <section id="kpis">
+      <h2 class="section-title">📊 Key Highlights at a Glance</h2>
+      <p class="section-desc">Designed to reduce front-desk workload, speed up response times to under 1 second, and boost service bookings.</p>
+      
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-icon">⚡</div>
+          <div class="kpi-val">&lt; 1 Second</div>
+          <div class="kpi-label">Instant Response Time</div>
+          <div class="kpi-sub">Natural conversational answers with zero dead air</div>
+        </div>
+        <div class="kpi-card green">
+          <div class="kpi-icon">📞</div>
+          <div class="kpi-val">24 / 7</div>
+          <div class="kpi-label">Round-the-Clock Answering</div>
+          <div class="kpi-sub">Handles 50+ simultaneous calls without busy tones</div>
+        </div>
+        <div class="kpi-card amber">
+          <div class="kpi-icon">🗣️</div>
+          <div class="kpi-val">Bilingual</div>
+          <div class="kpi-label">Malayalam &amp; English</div>
+          <div class="kpi-sub">Tuned for everyday spoken Kerala accents &amp; Manglish</div>
+        </div>
+        <div class="kpi-card purple">
+          <div class="kpi-icon">🔄</div>
+          <div class="kpi-val">100%</div>
+          <div class="kpi-label">Automatic CRM Sync</div>
+          <div class="kpi-sub">Instantly creates Leads, Services &amp; Complaints</div>
+        </div>
+      </div>
+
+      <!-- Problem vs Solution Comparison -->
+      <div class="split-grid">
+        <div class="split-box left">
+          <div class="split-title" style="color: var(--danger);">
+            <span>⚠️ Today's Manual Challenges</span>
+          </div>
+          <div class="split-item danger">
+            <strong>Delayed Callbacks:</strong> Over 100+ missed calls daily with manual callbacks delayed by 2–4 hours during busy periods.
+          </div>
+          <div class="split-item danger">
+            <strong>Staff Bandwidth Tied Up:</strong> Staff spend hours answering routine booking calls, taking addresses, and repeating basic troubleshooting.
+          </div>
+          <div class="split-item danger">
+            <strong>Missed Service Revenue:</strong> Delayed appointment scheduling causes impatient customers to call outside local mechanics.
+          </div>
+          <div class="split-item danger">
+            <strong>Manual CRM Entry:</strong> Staff must manually re-enter customer notes, appointment slots, and complaints into Sheetal CRM.
+          </div>
+        </div>
+
+        <div class="split-box right">
+          <div class="split-title" style="color: var(--accent);">
+            <span>✅ With Sheetal AI Assistant</span>
+          </div>
+          <div class="split-item success">
+            <strong>Instant 1st Ring Answer:</strong> Customers are answered live immediately; dropped calls get an automated AI callback in 30–45 seconds.
+          </div>
+          <div class="split-item success">
+            <strong>Automated Technician Booking:</strong> AI collects AC brand, issue, and preferred time slot, locking it into Sheetal CRM calendar.
+          </div>
+          <div class="split-item success">
+            <strong>Quick Technical Guidance:</strong> Resolves simple problems (e.g. tripped power switch, remote battery) directly over the call.
+          </div>
+          <div class="split-item success">
+            <strong>Automatic CRM Records:</strong> Every single call and WhatsApp chat produces a clean, ready-to-act CRM ticket automatically.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2: How It Works (Simple Client-Friendly Tabs) -->
+    <section id="howitworks">
+      <h2 class="section-title">🏗️ How the Platform Works</h2>
+      <p class="section-desc">Simple step-by-step flows explaining what happens when a customer calls or chats with Sheetal AC.</p>
+
+      <div class="arch-wrapper">
+        <div class="arch-tabs">
+          <button class="arch-tab-btn active" onclick="switchTab('voice-tab', this)">🎙️ 1. Phone Call Flow</button>
+          <button class="arch-tab-btn" onclick="switchTab('srv-tab', this)">📱 2. SRV Social WhatsApp Flow</button>
+          <button class="arch-tab-btn" onclick="switchTab('crm-tab', this)">🔄 3. What Happens in Sheetal CRM</button>
+          <button class="arch-tab-btn" onclick="switchTab('speed-tab', this)">⚡ 4. Natural Voice &amp; Fast Response</button>
+        </div>
+
+        <div class="arch-content">
+
+          <!-- TAB 1: Voice Call Flow -->
+          <div id="voice-tab" class="tab-pane active">
+            <h3 style="font-size: 1.25rem; margin-bottom: 6px;">How Inbound Phone Calls are Handled</h3>
+            <p style="color: var(--text-muted); font-size: 0.92rem; margin-bottom: 20px;">
+              From the moment the phone rings to the moment a technician is scheduled in Sheetal CRM:
+            </p>
+
+            <div class="steps-grid">
+              <div class="step-card">
+                <span class="step-badge">Step 1</span>
+                <div class="step-title">Customer Calls</div>
+                <div class="step-desc">A customer dials Sheetal AC's phone number. If a call drops or disconnects, the system automatically calls back within 45 seconds.</div>
+              </div>
+              <div class="step-card green">
+                <span class="step-badge">Step 2</span>
+                <div class="step-title">Instant AI Greeting</div>
+                <div class="step-desc">The AI answers on the 1st ring: <em>"Hello, welcome to Sheetal AC. How can I help you today?"</em> (available in Malayalam or English).</div>
+              </div>
+              <div class="step-card purple">
+                <span class="step-badge">Step 3</span>
+                <div class="step-title">Understands Customer Need</div>
+                <div class="step-desc">Identifies whether the customer wants a new AC, needs technician service, has a complaint, or needs quick troubleshooting.</div>
+              </div>
+              <div class="step-card amber">
+                <span class="step-badge">Step 4</span>
+                <div class="step-title">Action &amp; Confirmation</div>
+                <div class="step-desc">Collects location and preferred appointment slot, books the ticket in Sheetal CRM, and sends an SMS &amp; WhatsApp confirmation.</div>
+              </div>
+            </div>
+
+            <div class="info-callout">
+              <strong>Human Safety Backup:</strong> If a customer asks to speak with a person, or has a complex request outside standard workflows, the AI immediately transfers the call to Sheetal AC front-desk staff with a brief audio summary of what the customer said.
+            </div>
+          </div>
+
+          <!-- TAB 2: SRV Social WhatsApp Flow -->
+          <div id="srv-tab" class="tab-pane">
+            <h3 style="font-size: 1.25rem; margin-bottom: 6px;">SRV Social WhatsApp Flow (Connected to Sheetal CRM)</h3>
+            <p style="color: var(--text-muted); font-size: 0.92rem; margin-bottom: 20px;">
+              Sheetal CRM already has its own <strong>SRV Social WhatsApp</strong> system. The AI assistant connects directly to this existing setup:
+            </p>
+
+            <div class="steps-grid">
+              <div class="step-card green">
+                <span class="step-badge">Step 1</span>
+                <div class="step-title">Customer Messages</div>
+                <div class="step-desc">Customer sends a message to Sheetal AC's official WhatsApp number (e.g. <em>"My AC is leaking water"</em>).</div>
+              </div>
+              <div class="step-card">
+                <span class="step-badge">Step 2</span>
+                <div class="step-title">SRV Social Ingestion</div>
+                <div class="step-desc">The message lands directly in Sheetal CRM's SRV Social module, which passes the text to our AI assistant in real time.</div>
+              </div>
+              <div class="step-card purple">
+                <span class="step-badge">Step 3</span>
+                <div class="step-title">Step-by-Step Chat</div>
+                <div class="step-desc">The AI asks 1 question at a time (AC brand, area, preferred date &amp; time) and asks the customer to confirm with a simple "YES".</div>
+              </div>
+              <div class="step-card amber">
+                <span class="step-badge">Step 4</span>
+                <div class="step-title">CRM Sync &amp; Staff View</div>
+                <div class="step-desc">The service ticket is created automatically in Sheetal CRM. Sheetal staff can view the full conversation inside the SRV Social dashboard anytime.</div>
+              </div>
+            </div>
+
+            <div class="info-callout" style="background: #f0fdf4; border-color: var(--accent); color: #065f46;">
+              <strong>Live Staff Chat Takeover:</strong> Because this uses your existing <strong>SRV Social WhatsApp</strong> in Sheetal CRM, your staff can intervene and reply to any customer directly from the CRM chat panel at any moment. The AI automatically pauses once staff take over!
+            </div>
+          </div>
+
+          <!-- TAB 3: What Happens in Sheetal CRM -->
+          <div id="crm-tab" class="tab-pane">
+            <h3 style="font-size: 1.25rem; margin-bottom: 6px;">Automatic Record Creation in Sheetal CRM</h3>
+            <p style="color: var(--text-muted); font-size: 0.92rem; margin-bottom: 20px;">
+              Every interaction creates a structured, ready-to-act record in Sheetal CRM without staff having to type anything:
+            </p>
+
+            <div class="steps-grid">
+              <div class="step-card">
+                <span class="step-badge">Sales Lead</span>
+                <div class="step-title">New AC Inquiries</div>
+                <div class="step-desc">
+                  Creates a high-priority <strong>Lead</strong> with customer name, mobile, location, preferred AC model/capacity, and timeline for sales reps to close.
+                </div>
+              </div>
+              <div class="step-card green">
+                <span class="step-badge">Service Ticket</span>
+                <div class="step-title">Technician Appointments</div>
+                <div class="step-desc">
+                  Creates a <strong>Service Ticket</strong> with status <code>Scheduled</code>, customer address, AC brand, issue description, and preferred appointment time.
+                </div>
+              </div>
+              <div class="step-card amber">
+                <span class="step-badge">Complaint Log</span>
+                <div class="step-title">Complaints &amp; Support</div>
+                <div class="step-desc">
+                  Logs a <strong>Complaint Ticket</strong> with detailed diagnostic notes, priority rating, and troubleshooting history for supervisor action.
+                </div>
+              </div>
+              <div class="step-card purple">
+                <span class="step-badge">Call Audit</span>
+                <div class="step-title">Full Call History</div>
+                <div class="step-desc">
+                  Attaches full call summary, conversation audio recording link, and timestamp to the customer profile in Sheetal CRM.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 4: Fast & Natural Voice -->
+          <div id="speed-tab" class="tab-pane">
+            <h3 style="font-size: 1.25rem; margin-bottom: 6px;">Why the AI Feels Natural &amp; Fast to Callers</h3>
+            <p style="color: var(--text-muted); font-size: 0.92rem; margin-bottom: 20px;">
+              Key conversational features that give callers a smooth, human-like experience:
+            </p>
+
+            <div class="steps-grid">
+              <div class="step-card">
+                <span class="step-badge">Fast Response</span>
+                <div class="step-title">Zero Dead Air</div>
+                <div class="step-desc">The AI begins responding within 1 second after the caller finishes speaking, so the conversation never feels robotic or delayed.</div>
+              </div>
+              <div class="step-card green">
+                <span class="step-badge">Interruption Friendly</span>
+                <div class="step-title">Instant Barge-In</div>
+                <div class="step-desc">If the customer interrupts while the AI is speaking, the AI stops talking immediately and listens, just like a real person.</div>
+              </div>
+              <div class="step-card purple">
+                <span class="step-badge">Bilingual Fluency</span>
+                <div class="step-title">Speaks Everyday Malayalam</div>
+                <div class="step-desc">Trained on regional Kerala accents, everyday Malayalam, and mixed "Manglish" (Malayalam + English AC terms like "cooling illa", "split AC").</div>
+              </div>
+              <div class="step-card amber">
+                <span class="step-badge">Zero Stranded Calls</span>
+                <div class="step-title">Warm Transfer to Staff</div>
+                <div class="step-desc">If there is ever a connection issue or the customer requests human help, the call bridges smoothly to Sheetal AC front desk staff.</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3: Interactive Experience & Live CRM Preview -->
+    <section id="simulator">
+      <h2 class="section-title">🎮 Live Experience Playground</h2>
+      <p class="section-desc">See how the AI conducts real customer conversations and view the exact CRM record created in Sheetal CRM.</p>
+
+      <div class="sim-card">
+        <div class="sim-header">
+          <div class="sim-title">
+            <span>Select a Real-World Scenario:</span>
+          </div>
+          <div class="sim-selectors">
+            <button class="sim-btn active" onclick="loadScenario('tech', this)">🔧 Technician Booking</button>
+            <button class="sim-btn" onclick="loadScenario('trouble', this)">🛠️ Level-1 Troubleshooting</button>
+            <button class="sim-btn" onclick="loadScenario('sales', this)">❄️ Sales Lead (Malayalam)</button>
+            <button class="sim-btn" onclick="loadScenario('wa', this)">📱 SRV Social WhatsApp Chat</button>
+          </div>
+        </div>
+
+        <div class="sim-body">
+          <!-- Chat / Call dialogue -->
+          <div class="chat-column" id="chat-messages">
+            <!-- Dynamically loaded -->
+          </div>
+
+          <!-- Client-Friendly CRM Action Preview -->
+          <div class="crm-column">
+            <div class="crm-header-bar">
+              <span class="crm-header-title">📋 Sheetal CRM Live Record Preview</span>
+              <span class="crm-badge-live">
+                <span class="live-dot"></span> Auto-Created
+              </span>
+            </div>
+
+            <div class="ticket-card" id="ticket-preview">
+              <!-- Dynamically populated via JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 4: SRV Social WhatsApp Integration -->
+    <section id="srv-whatsapp">
+      <h2 class="section-title">📱 Seamless Integration with Sheetal SRV Social WhatsApp</h2>
+      <p class="section-desc">No external third-party chat dashboard required. The AI assistant connects directly with your existing Sheetal CRM WhatsApp module.</p>
+
+      <div class="steps-grid" style="margin-bottom: 50px;">
+        <div class="step-card">
+          <div class="step-title">1. Existing Phone Number</div>
+          <div class="step-desc">Uses Sheetal AC's existing WhatsApp business number already registered with your CRM. Customers message the same familiar number.</div>
+        </div>
+        <div class="step-card green">
+          <div class="step-title">2. Unified CRM Inbox</div>
+          <div class="step-desc">All conversations and customer histories appear inside your existing Sheetal CRM <strong>SRV Social</strong> dashboard (`wa_chat`).</div>
+        </div>
+        <div class="step-card purple">
+          <div class="step-title">3. Automated Confirmation</div>
+          <div class="step-desc">Before booking any technician visit, the AI sends a clear summary asking the customer to reply "YES" to prevent fake or duplicate bookings.</div>
+        </div>
+        <div class="step-card amber">
+          <div class="step-title">4. Staff Override Anytime</div>
+          <div class="step-desc">Your staff can jump into any WhatsApp conversation directly from the CRM chat panel. The AI steps aside automatically.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 5: Safety Guardrails -->
+    <section id="guardrails">
+      <h2 class="section-title">🛡️ Safety Guardrails &amp; Business Rules</h2>
+      <p class="section-desc">Built-in safeguards ensure professional customer handling, compliance, and zero dropped calls.</p>
+
+      <div class="guardrails-grid">
+        <div class="guardrail-card green">
+          <div class="guardrail-title">📞 Zero Dropped Call Guarantee</div>
+          <div class="guardrail-desc">
+            If a customer's phone signal is weak or the AI encounters any delay, the call is transferred smoothly to Sheetal AC front desk with an audio whisper summary.
+          </div>
+        </div>
+
+        <div class="guardrail-card amber">
+          <div class="guardrail-title">⏰ TRAI Business Hours Compliance</div>
+          <div class="guardrail-desc">
+            Automated outbound callbacks strictly follow official calling hours (9:00 AM – 8:30 PM). Night-time missed calls receive an instant WhatsApp acknowledgment and callback at 9:05 AM.
+          </div>
+        </div>
+
+        <div class="guardrail-card red">
+          <div class="guardrail-title">🚫 Instant DND / Opt-Out</div>
+          <div class="guardrail-desc">
+            If a customer says "Don't call" or asks not to be contacted, their number is immediately flagged in Sheetal CRM to block future automated calls.
+          </div>
+        </div>
+
+        <div class="guardrail-card">
+          <div class="guardrail-title">🔒 Call Recording &amp; Consent</div>
+          <div class="guardrail-desc">
+            Every call opens with a polite bilingual recording disclosure, and audio recordings are stored securely with full privacy protection for audit.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 6: Simple Client-Friendly Timeline -->
+    <section id="roadmap">
+      <h2 class="section-title">🗓️ Simple Implementation Roadmap</h2>
+      <p class="section-desc">A clear, phased delivery schedule designed for smooth testing and staff training before go-live.</p>
+
+      <div class="roadmap-grid">
+        <div class="roadmap-card">
+          <div class="roadmap-num">Phase 1</div>
+          <div class="roadmap-title">Setup &amp; Phone Setup</div>
+          <span class="roadmap-time">Week 1</span>
+          <ul class="roadmap-items">
+            <li>Connect virtual phone number for live answering</li>
+            <li>Link with Sheetal SRV Social WhatsApp</li>
+            <li>Confirm business rules and technician slots</li>
+          </ul>
+        </div>
+
+        <div class="roadmap-card" style="border-top-color: var(--accent);">
+          <div class="roadmap-num" style="color: var(--accent);">Phase 2</div>
+          <div class="roadmap-title">AI Voice Quality Test</div>
+          <span class="roadmap-time">Weeks 2–3</span>
+          <ul class="roadmap-items">
+            <li>Test spoken Malayalam &amp; English voice clarity</li>
+            <li>Verify under 1-second response speed</li>
+            <li>Run sample calls with test scenarios</li>
+          </ul>
+        </div>
+
+        <div class="roadmap-card" style="border-top-color: #8b5cf6;">
+          <div class="roadmap-num" style="color: #8b5cf6;">Phase 3</div>
+          <div class="roadmap-title">Sheetal CRM Hookup</div>
+          <span class="roadmap-time">Weeks 4–6</span>
+          <ul class="roadmap-items">
+            <li>Enable auto-creation of Leads in CRM</li>
+            <li>Enable automatic Technician visit booking</li>
+            <li>Enable Complaint ticket creation</li>
+          </ul>
+        </div>
+
+        <div class="roadmap-card" style="border-top-color: var(--warning);">
+          <div class="roadmap-num" style="color: var(--warning);">Phase 4</div>
+          <div class="roadmap-title">Staff Testing &amp; Pilot</div>
+          <span class="roadmap-time">Weeks 7–8</span>
+          <ul class="roadmap-items">
+            <li>Sheetal AC staff test real call situations</li>
+            <li>Fine-tune appointment slot timings</li>
+            <li>Staff training on SRV Social takeover</li>
+          </ul>
+        </div>
+
+        <div class="roadmap-card" style="border-top-color: var(--primary);">
+          <div class="roadmap-num">Phase 5</div>
+          <div class="roadmap-title">Official Go-Live</div>
+          <span class="roadmap-time">Weeks 9–10</span>
+          <ul class="roadmap-items">
+            <li>Start handling live customer calls 24/7</li>
+            <li>Automated missed-call follow-ups active</li>
+            <li>Full live production support</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>❄️ Sheetal Refrigeration / Sheetal AC — Conversational AI Platform</p>
+    <p style="margin-top: 6px; font-size: 0.8rem; opacity: 0.7;">
+      Client Technical Overview &bull; Real-Time Voice Telephony &amp; SRV Social WhatsApp Integration
+    </p>
+  </footer>
+
+  <!-- Interactive JavaScript -->
+  <script>
+    // Tab Switcher
+    function switchTab(tabId, btn) {
+      document.querySelectorAll('.tab-pane').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.arch-tab-btn').forEach(el => el.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      btn.classList.add('active');
+    }
+
+    // Client-Friendly Scenario Data
+    const scenarios = {
+      tech: {
+        chat: [
+          { speaker: 'Sheetal AI', text: 'Hello, thank you for calling Sheetal AC. How can I help you today?', role: 'assistant' },
+          { speaker: 'Customer', text: 'My split AC is not cooling properly and making a strange rattling noise.', role: 'user' },
+          { speaker: 'Sheetal AI', text: 'I understand, let me help you with that. May I have your location and the brand of your AC?', role: 'assistant' },
+          { speaker: 'Customer', text: "It's a Daikin 1.5-ton split AC in Edappally, Kochi.", role: 'user' },
+          { speaker: 'Sheetal AI', text: 'We can dispatch a certified technician to inspect your AC. What date and time slot would work best for you?', role: 'assistant' },
+          { speaker: 'Customer', text: 'Tomorrow between 10 AM and 1 PM.', role: 'user' },
+          { speaker: 'Sheetal AI', text: 'Perfect! I have scheduled a technician visit for tomorrow between 10 AM and 1 PM for your Daikin AC in Edappally. Your service request ID is SRV-1026-0042. You will receive an SMS and WhatsApp confirmation shortly.', role: 'assistant' }
+        ],
+        card: {
+          title: "🔧 Service Appointment Scheduled",
+          id: "SRV-1026-0042",
+          statusClass: "success",
+          statusText: "Scheduled (Status 3)",
+          rows: [
+            { label: "Customer Name", value: "Rahul Nair" },
+            { label: "Contact Number", value: "+91 98470 12345" },
+            { label: "AC Brand & Model", value: "Daikin 1.5 Ton Inverter Split AC" },
+            { label: "Reported Problem", value: "Not cooling, loud vibrating noise in outdoor unit" },
+            { label: "Service Location", value: "Edappally, Kochi" },
+            { label: "Booked Appointment", value: "Tomorrow, 10:00 AM – 1:00 PM" },
+            { label: "Assigned Team", value: "Kochi Central Service Hub" }
+          ],
+          note: "✅ Ticket created in Sheetal CRM. Automated SMS and WhatsApp confirmation dispatched to customer."
+        }
+      },
+      trouble: {
+        chat: [
+          { speaker: 'Sheetal AI', text: 'Hello, thank you for calling Sheetal AC support. How may I assist you?', role: 'assistant' },
+          { speaker: 'Customer', text: "My AC remote screen is completely blank and the AC won't power on.", role: 'user' },
+          { speaker: 'Sheetal AI', text: 'Let me guide you through a quick check. Have you checked if the main power MCB switch on the wall is turned on, or tried replacing the remote batteries?', role: 'assistant' },
+          { speaker: 'Customer', text: 'Oh! The MCB wall switch had tripped! I switched it back on and the AC just started cooling! Thanks a lot!', role: 'user' },
+          { speaker: 'Sheetal AI', text: "Wonderful, I'm glad that resolved it! I have logged this resolution in your customer profile. Have a cool and comfortable day with Sheetal AC!", role: 'assistant' }
+        ],
+        card: {
+          title: "🛠️ Level-1 Troubleshooting (Self-Resolved)",
+          id: "FLW-1026-0188",
+          statusClass: "success",
+          statusText: "Resolved Over Call",
+          rows: [
+            { label: "Customer Contact", value: "+91 98470 12345" },
+            { label: "Issue Reported", value: "Remote blank, AC power unresponsive" },
+            { label: "AI Guidance", value: "Guided caller to check main MCB power switch" },
+            { label: "Resolution", value: "MCB was tripped; customer restored power successfully" },
+            { label: "Technician Dispatch", value: "Not Required (Trip Cost Saved)" },
+            { label: "Logged Under", value: "Customer Activity & Follow-Up History" }
+          ],
+          note: "💡 Resolved without dispatching a technician. Saves staff time and service vehicle costs."
+        }
+      },
+      sales: {
+        chat: [
+          { speaker: 'Sheetal AI', text: 'ശീതൾ എസിയിലേക്ക് സ്വാഗതം. ഞാൻ എങ്ങനെയാണ് സഹായിക്കേണ്ടത്? (Welcome to Sheetal AC. How can I help you?)', role: 'assistant' },
+          { speaker: 'Customer', text: 'എനിക്ക് ബെഡ്റൂമിലേക്ക് പുതിയൊരു 1.5 ടൺ ഇൻവെർട്ടർ എസി വാങ്ങണം. (I want to buy a new 1.5-ton inverter AC for my bedroom.)', role: 'user' },
+          { speaker: 'Sheetal AI', text: 'തീർച്ചയായും! ഏത് സ്ഥലത്താണ് താങ്കൾക്ക് എസി വേണ്ടത്, ഒപ്പം പ്രത്യേക ബ്രാൻഡ് താൽപ്പര്യമുണ്ടോ? (Sure! Which location and do you have a preferred brand?)', role: 'assistant' },
+          { speaker: 'Customer', text: 'കലൂർ ആണ് സ്ഥലം. ഡൈകിൻ അല്ലെങ്കിൽ വോൾട്ടാസ് മതി. (Location is Kaloor. Daikin or Voltas preferred.)', role: 'user' },
+          { speaker: 'Sheetal AI', text: 'നന്ദി! താങ്കളുടെ വിവരങ്ങൾ ഞങ്ങളുടെ സെയിൽസ് ടീമിന് കൈമാറിയിട്ടുണ്ട്. മികച്ച ഓഫറുകളുമായി അവർ ഉടൻ വിളിക്കുന്നതായിരിക്കും. (Thank you! Lead created for sales team.)', role: 'assistant' }
+        ],
+        card: {
+          title: "💼 High-Priority Sales Lead Generated",
+          id: "LD-1026-0089",
+          statusClass: "primary",
+          statusText: "New Qualified Lead",
+          rows: [
+            { label: "Customer Contact", value: "+91 98470 98765" },
+            { label: "Requirement", value: "1.5 Ton 5-Star Inverter Split AC" },
+            { label: "Preferred Brands", value: "Daikin or Voltas" },
+            { label: "Installation Area", value: "Kaloor, Ernakulam" },
+            { label: "Purchase Timeline", value: "Immediate (This Week)" },
+            { label: "Assigned Desk", value: "Sheetal Retail Sales Team" }
+          ],
+          note: "🎯 Lead auto-assigned to sales manager with full audio transcript in Sheetal CRM."
+        }
+      },
+      wa: {
+        chat: [
+          { speaker: 'Customer', text: 'Hi, my office AC in Kakkanad has water leaking inside the room.', role: 'user' },
+          { speaker: 'SRV Social AI', text: 'Hello! Sorry for the trouble with the water leakage. What brand is the AC?', role: 'assistant' },
+          { speaker: 'Customer', text: 'It is a 2-ton Blue Star split AC.', role: 'user' },
+          { speaker: 'SRV Social AI', text: 'Got it. We can book a technician to service your Blue Star AC in Kakkanad tomorrow at 2:00 PM. Please reply YES to confirm.', role: 'assistant' },
+          { speaker: 'Customer', text: 'YES', role: 'user' },
+          { speaker: 'SRV Social AI', text: '✅ Confirmed! Your service appointment has been booked with ID: SRV-1026-0094. Our technician will call you before arriving tomorrow at 2 PM.', role: 'assistant' }
+        ],
+        card: {
+          title: "📱 SRV Social WhatsApp Service Booking",
+          id: "SRV-1026-0094",
+          statusClass: "success",
+          statusText: "Customer Confirmed (YES)",
+          rows: [
+            { label: "Channel", value: "Sheetal SRV Social WhatsApp" },
+            { label: "Customer Phone", value: "+91 98470 12345" },
+            { label: "AC Brand & Size", value: "Blue Star 2.0 Ton Split AC" },
+            { label: "Reported Fault", value: "Water leaking inside the office room" },
+            { label: "Service Location", value: "Kakkanad, Kochi" },
+            { label: "Confirmed Time", value: "Tomorrow at 2:00 PM" },
+            { label: "SRV Social Status", value: "Visible in Sheetal CRM WhatsApp Chat Panel" }
+          ],
+          note: "💬 Full WhatsApp conversation is saved in Sheetal CRM SRV Social. Staff can reply anytime."
+        }
+      }
+    };
+
+    function loadScenario(type, btn) {
+      document.querySelectorAll('.sim-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const data = scenarios[type];
+      
+      // Load Chat
+      const chatContainer = document.getElementById('chat-messages');
+      chatContainer.innerHTML = '';
+      data.chat.forEach(msg => {
+        const bubble = document.createElement('div');
+        bubble.className = `chat-bubble ${msg.role}`;
+        bubble.innerHTML = `
+          <div class="speaker">${msg.speaker}</div>
+          <div class="text">${msg.text}</div>
+        `;
+        chatContainer.appendChild(bubble);
+      });
+
+      // Load Visual Ticket Card
+      const ticketContainer = document.getElementById('ticket-preview');
+      let rowsHtml = '';
+      data.card.rows.forEach(r => {
+        rowsHtml += `
+          <div class="ticket-row">
+            <div class="ticket-label">${r.label}:</div>
+            <div class="ticket-value">${r.value}</div>
+          </div>
+        `;
+      });
+
+      ticketContainer.innerHTML = `
+        <div class="ticket-head">
+          <div>
+            <div class="ticket-type">${data.card.title}</div>
+            <div style="margin-top: 4px;">
+              <span class="status-pill ${data.card.statusClass}">${data.card.statusText}</span>
+            </div>
+          </div>
+          <div class="ticket-id">ID: ${data.card.id}</div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 8px; margin: 8px 0;">
+          ${rowsHtml}
+        </div>
+        <div class="ticket-footer-note">${data.card.note}</div>
+      `;
+    }
+
+    // Initialize with Technician Booking
+    document.addEventListener('DOMContentLoaded', () => {
+      loadScenario('tech', document.querySelector('.sim-btn.active'));
+    });
+  </script>
+</body>
+</html>
